@@ -1,10 +1,8 @@
 # Auto-Submit
 
-This is the Minecraft: Java Edition speedrun.com Auto Submit Program.
+the Minecraft: Java Edition speedrun.com Auto Submit Program.
 
-Please download autosubmit.ui too
-
-Just Dev(incomplete) Version.
+Alpha Version.
 
 Many Bugs, Incomplete Program.
 
@@ -14,6 +12,6 @@ Only 1.16.1 Support
 
 autosubmit.ui 파일도 py 파일과 같이 받아주세요.
 
-개발버전(미완성)입니다.
+알파버전(미완성)입니다.
 
 1.16.1 전용
