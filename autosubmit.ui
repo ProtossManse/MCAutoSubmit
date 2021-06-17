@@ -73,7 +73,7 @@
        </rect>
       </property>
       <property name="text">
-       <string notr="true">Seed: 2483313382402348964</string>
+       <string notr="true">Seed: </string>
       </property>
       <property name="readOnly">
        <bool>true</bool>
@@ -95,37 +95,7 @@
       </item>
       <item>
        <property name="text">
-        <string>1.15.2</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1.14.4</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1.8.9</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1.7.10</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1.7.4</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1.7.2</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1.6.4</string>
+        <string>Other (Not Supported)</string>
        </property>
       </item>
      </widget>
@@ -163,12 +133,12 @@
        <rect>
         <x>10</x>
         <y>160</y>
-        <width>101</width>
+        <width>111</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Real Time:</string>
+       <string>Real Time(Manual):</string>
       </property>
      </widget>
      <widget class="QComboBox" name="seedType">
@@ -181,7 +151,7 @@
        </rect>
       </property>
       <property name="currentText">
-       <string>SSG</string>
+       <string>RSG</string>
       </property>
       <item>
        <property name="text">
@@ -336,7 +306,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Video Link</string>
+       <string>Video Link(Manual)</string>
       </property>
      </widget>
      <widget class="QComboBox" name="diffiBox">
@@ -388,11 +358,6 @@
       </item>
       <item>
        <property name="text">
-        <string>Optifine</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
         <string>CaffeineMC</string>
        </property>
       </item>
@@ -416,15 +381,14 @@
      <widget class="QPushButton" name="startButton">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>160</y>
+        <x>220</x>
+        <y>10</y>
         <width>161</width>
-        <height>41</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>Submit
-(Alt + 3)</string>
+       <string>Submit</string>
       </property>
      </widget>
      <widget class="QPushButton" name="f3Button">
@@ -443,14 +407,46 @@
      <widget class="QPushButton" name="resetButton">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>140</x>
         <y>160</y>
-        <width>41</width>
+        <width>211</width>
         <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>Reset</string>
+       <string>Refresh (After Run)
+(Alt + 3)</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Settings</string>
+     </attribute>
+     <widget class="QPushButton" name="pathButton">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>20</y>
+        <width>71</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="pathLine">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>291</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

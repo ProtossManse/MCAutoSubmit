@@ -4,7 +4,6 @@ import sys
 import os
 import keyboard
 import webbrowser
-import srcomapi, srcomapi.datatypes as dt
 from nbt.nbt import NBTFile
 import getpass
 
@@ -17,7 +16,7 @@ from PyQt5 import QtTest
 
 username = getpass.getuser()
 userpath = os.path.join("C:\\Users",username,"AppData\\Roaming")
-path = userpath
+path = userpath + "\\.minecraft"
 
 
 
@@ -35,21 +34,74 @@ class MainDialog(QMainWindow):
         QMainWindow.__init__(self, None)
         PyQt5.uic.loadUi(form, self)
         self.seedbutton.clicked.connect(self.seedClicked)
-        self.f3Box.clicked.connect(self.f3Clicked)
-        self.resetButton.clicked.connect(self.reset)
-        self.startButton.setShortcut("Alt+3")
+        self.resetButton.clicked.connect(self.auto)
         self.startButton.clicked.connect(self.macro1)
         self.pathButton.clicked.connect(self.browse)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
-        self.pathLine.setText(userpath +"/.minecraft")
-        dat = NBTFile(os.path.join(path, ".minecraft\\saves\\새로운 세계 (26)\\level.dat"))
+        self.resetButton.setStyleSheet("background-color : #65FF01")
+        self.pathLine.setText(userpath)
+        self.auto()
+        
 
+
+    def seedClicked(self):
+        seed, ok1 = QInputDialog.getText(self, "Change Seed", "<font face=\"Malgun Gothic\">Seed:</font>")
+
+        if ok1 == True:
+            if seed != "":
+                self.sText.setText("Seed: " + str(seed))
+        
+    def keyboardEventReceived(self, event):
+        if event.event_type == 'down':
+            if event.name == 'f3':
+                self.f3Box.setChecked(True)
+            if event.name == 'esc':
+                self.auto()
+        
+    def browse(self):
+        global path
+        pathops = QFileDialog.Options()
+        pathops |= QFileDialog.ShowDirsOnly
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', userpath)
+        if path != "":
+            self.pathLine.setText(str(path))
+
+
+    def auto(self):
+        mc_dir = path
+        mc_saves = os.path.join(mc_dir, "saves")
+
+        worlds_recently_modified = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
+        for w in worlds_recently_modified.copy()[:3]:
+            world = w
+            dat = NBTFile(os.path.join(world, "level.dat"))
+            if not int(str(dat["Data"]["Time"])):
+                continue
+            else:
+                break
+        
         mc_version = str(dat["Data"]["Version"]["Name"])
         mc_diffi = str(dat["Data"]["Difficulty"])
         mc_hardcore = str(dat["Data"]["hardcore"])
         mc_igt = str(dat["Data"]["DayTime"])
         mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
+        mc_moded = str(dat["Data"]["WasModded"])
+        mc_sec = int(mc_igt)/20
 
+        dot = str(mc_sec)
+        dot = dot.index(".")
+        intsec = str(mc_sec)[:int(dot)]
+        realsec = int(intsec) % 60
+        min = int(intsec) / 60 % 60
+        min = int(min)
+        min = str(min)
+        ms = str(mc_sec)[int(dot) + 1:]
+        if len(ms) == 2:
+            ms = ms + "0"
+        elif len(ms) == 1:
+            ms = ms + "00"
+
+        self.sText.setText("Seed: " + mc_seed)
         if mc_hardcore == "1":
             mc_diffi = "Hardcore"
         elif mc_hardcore == "0":
@@ -59,89 +111,27 @@ class MainDialog(QMainWindow):
                 mc_diffi = "Normal"
             elif mc_diffi == "3":
                 mc_diffi = "Hard"
+        if mc_moded == "1":
+            mc_moded = True
         
 
-        print(f"{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{int(mc_igt)/20} secs\nSeed: {mc_seed}")
-    def seedClicked(self):
-        seed, ok1 = QInputDialog.getText(self, "Change Seed", "<font face=\"Malgun Gothic\">Seed:</font>")
+        print(f"{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{min} min {realsec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}")
+        if mc_diffi == "Easy":
+            self.diffiBox.setCurrentText("Easy")
+        elif mc_diffi == "Normal":
+            self.diffiBox.setCurrentText("Normal")
+        elif mc_diffi == "Hard":
+            self.diffiBox.setCurrentText("Hard")
+        elif mc_diffi == "Hardcore":
+            self.diffiBox.setCurrentText("Hardcore")
 
-        if ok1 == True:
-            if seed != "":
-                self.sText.setText("Seed: " + str(seed))
+        if mc_moded == True:
+            self.Mods.setCurrentText("CaffeineMC")
 
-    def f3Clicked(self):
-        if self.f3Box.isChecked() == False:
-            self.f3Box.toggle()
-    def keyboardEventReceived(self, event):
-        if event.event_type == 'down':
-            if event.name == 'f3':
-                if self.f3Box.isChecked() == False:
-                    self.f3Box.toggle()
-    def reset(self):
-        if self.f3Box.isChecked() == True:
-            self.f3Box.toggle()
+        self.igtMin.setText(min)
+        self.igtSec.setText(str(realsec))
+        self.igtPoint.setText(ms)
 
-    def browse(self):
-        global path
-        pathops = QFileDialog.Options()
-        pathops |= QFileDialog.ShowDirsOnly
-        path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', userpath)
-        if path != "":
-            self.pathLine.setText(str(path))
-#--------------------------
-
-    # def get_last_played_level():
-    #     mc_dir = path
-    #     mc_saves = os.path.join(mc_dir, "saves")
-
-    #     worlds_recently_modified = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
-    #     for w in worlds_recently_modified.copy()[:3]:
-    #         try:
-    #             world = w
-    #             level = NBTFile(os.path.join(world, "level.dat"))
-    #             if not int(str(level["Data"]["Time"])):
-    #                 continue
-    #             else:
-    #                 break
-    #         except:
-    #             continue
-    #     except: #* If it's pre 1.7.2
-    #         stats = None
-
-    #     try:
-    #         seen_credits = bool(int(str(level["Data"]["Player"]["seenCredits"])))
-    #     except: #* If it's pre 1.12 OR a server
-    #         seen_credits = None
-
-    #     try:
-    #         data = {
-    #             "name": str(level["Data"]["LevelName"]),
-    #             "version": str(level["Data"]["Version"]["Name"]),
-    #             "igt": stats["stat.playOneMinute"] if int(str(level["Data"]["DataVersion"])) < 1451 else stats["stats"]["minecraft:custom"]["minecraft:play_one_minute"],
-    #             "seen_credits": seen_credits,
-    #             "pre17": False
-    #         }
-    #     except: #* If it's pre 1.9
-    #         try:
-    #             data = {
-    #                 "name": str(level["Data"]["LevelName"]),
-    #                 "version": "Pre 1.9",
-    #                 "igt": stats["stat.playOneMinute"],
-    #                 "seen_credits": seen_credits,
-    #                 "pre17": False
-    #             }
-    #         except: #* If it's pre 1.7.2
-    #             data = {
-    #                 "name": str(level["Data"]["LevelName"]),
-    #                 "version": "Pre 1.7.2",
-    #                 "igt": utils.get_pre17_igt(mc_dir),
-    #                 "seen_credits": seen_credits,
-    #                 "pre17": True
-    #             }
-
-    #     return data
-
-            
 
 #-------------------------------------------macro--------------------- 
 
