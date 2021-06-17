@@ -18,21 +18,38 @@ username = getpass.getuser()
 userpath = os.path.join("C:\\Users",username,"AppData\\Roaming")
 path = userpath + "\\.minecraft"
 
-
-
-
 def resource_path(relative_path):
-    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-    return os.path.join(base_path, relative_path)
-    
-form = resource_path('autosubmit.ui')
- 
-form_class = uic.loadUiType(form)[0]
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+        print(base_path)
+    except Exception:
+        base_path = os.path.abspath(".")
+        
 
-class MainDialog(QMainWindow):
+
+    return os.path.join(base_path, relative_path)
+
+macUI = resource_path("autosubmit.ui")
+macUI = str(macUI)
+
+# print(macUI)
+
+Ui_MainWindow = uic.loadUiType(macUI)[0]
+
+
+
+
+# macUI = os.path.join(os.path.dirname(os.path.realpath(__file__)), "autosubmit.ui")
+    
+ 
+class MainDialog(QMainWindow, Ui_MainWindow):
     def __init__(self):
-        QMainWindow.__init__(self, None)
-        PyQt5.uic.loadUi(form, self)
+        super().__init__()
+        self.setupUi(self)
+
+        # # PyQt5.uic.loadUi(str(macUI), self)
         self.seedbutton.clicked.connect(self.seedClicked)
         self.resetButton.clicked.connect(self.auto)
         self.startButton.clicked.connect(self.macro1)
@@ -40,7 +57,6 @@ class MainDialog(QMainWindow):
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.resetButton.setStyleSheet("background-color : #65FF01")
         self.pathLine.setText(userpath)
-        self.auto()
         
 
 
@@ -70,7 +86,6 @@ class MainDialog(QMainWindow):
     def auto(self):
         mc_dir = path
         mc_saves = os.path.join(mc_dir, "saves")
-        global dat
 
         worlds_recently_modified = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
         for w in worlds_recently_modified.copy()[:3]:
@@ -80,7 +95,7 @@ class MainDialog(QMainWindow):
                 continue
             else:
                 break
- 
+        
         mc_version = str(dat["Data"]["Version"]["Name"])
         mc_diffi = str(dat["Data"]["Difficulty"])
         mc_hardcore = str(dat["Data"]["hardcore"])
@@ -256,10 +271,10 @@ class MainDialog(QMainWindow):
 
 
 
-
-app = QApplication(sys.argv)
-main_dialog = MainDialog()
-main_dialog.show()
-app.exec_()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    main_dialog = MainDialog()
+    main_dialog.show()
+    app.exec_()
 
 
