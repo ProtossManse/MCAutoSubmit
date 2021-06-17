@@ -414,7 +414,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Refresh (After Run)
+       <string>Refresh
 (Alt + 3)</string>
       </property>
      </widget>
