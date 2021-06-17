@@ -415,7 +415,7 @@
       </property>
       <property name="text">
        <string>Refresh
-(Alt + 3)</string>
+(Esc)</string>
       </property>
      </widget>
     </widget>
