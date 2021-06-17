@@ -129,6 +129,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 mc_diffi = "Hard"
         if mc_moded == "1":
             mc_moded = True
+        elif mc_moded == "0":
+            mc_moded = False
         
 
         print(f"{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{min} min {realsec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}")
@@ -143,6 +145,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
         if mc_moded == True:
             self.Mods.setCurrentText("CaffeineMC")
+        elif mc_moded == False:
+            self.Mods.setCurrentText("Vanilla")
 
         self.igtMin.setText(min)
         self.igtSec.setText(str(realsec))
