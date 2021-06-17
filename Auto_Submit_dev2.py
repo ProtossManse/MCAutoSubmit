@@ -70,6 +70,7 @@ class MainDialog(QMainWindow):
     def auto(self):
         mc_dir = path
         mc_saves = os.path.join(mc_dir, "saves")
+        global dat
 
         worlds_recently_modified = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
         for w in worlds_recently_modified.copy()[:3]:
@@ -79,7 +80,7 @@ class MainDialog(QMainWindow):
                 continue
             else:
                 break
-        
+ 
         mc_version = str(dat["Data"]["Version"]["Name"])
         mc_diffi = str(dat["Data"]["Difficulty"])
         mc_hardcore = str(dat["Data"]["hardcore"])
