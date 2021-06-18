@@ -122,7 +122,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             if self.textEdit.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요.":
                 self.textEdit.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>")
             
-        
 
 
     def auto(self):
@@ -155,7 +154,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             else:
                 self.version.setCurrentText("Other")
             
-
 
             dot = str(mc_sec)
             dot = dot.index(".")
@@ -226,22 +224,22 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
     def macro1(self):
         rtMin = self.rtMin.text()
-        rtSec = self.rtSec.text()
-        rtPoint = self.rtPoint.text()
-        igtHr = self.igtHr.text()
-        igtMin = self.igtMin.text()
-        igtSec = self.igtSec.text()
-        igtPoint = self.igtPoint.text()
-        version = self.version.currentText()
-        seedType = self.seedType.currentText()
-        Mods = self.Mods.currentText()
-        diffi = self.diffiBox.currentText()
-        ytlink = self.ytLink.text()
-        desc = self.sText.text()
+        # rtSec = self.rtSec.text()
+        # rtPoint = self.rtPoint.text()
+        # igtHr = self.igtHr.text()
+        # igtMin = self.igtMin.text()
+        # igtSec = self.igtSec.text()
+        # igtPoint = self.igtPoint.text()
+        # version = self.version.currentText()
+        # seedType = self.seedType.currentText()
+        # Mods = self.Mods.currentText()
+        # diffi = self.diffiBox.currentText()
+        # ytlink = self.ytLink.text()
+        # desc = self.sText.text()
 
 
-        webbrowser.open("https://www.speedrun.com/mc")
-        QtTest.QTest.qWait(4000)
+        # webbrowser.open("https://www.speedrun.com/mc")
+        # QtTest.QTest.qWait(4000)
         # pag.click(submitbtn)
         # pag.moveTo(1300, 270)
         # pag.click()
