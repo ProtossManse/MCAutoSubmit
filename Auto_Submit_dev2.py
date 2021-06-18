@@ -35,7 +35,7 @@ def resource_path(relative_path):
 
 macUI = resource_path("autosubmit.ui")
 macUI = str(macUI)
-
+ico = resource_path("MCAutoSubmit.png")
 
 Ui_MainWindow = uic.loadUiType(macUI)[0]
 
@@ -48,6 +48,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.setWindowIcon(QIcon(ico))
 
         self.seedbutton.clicked.connect(self.seedClicked)
         self.resetButton.clicked.connect(self.auto)
@@ -71,6 +72,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             if event.name == 'f3':
                 self.f3Box.setChecked(True)
             if event.name == 'esc':
+                QtTest.QTest.qWait(200)
                 self.auto()
         
     def browse(self):
@@ -102,6 +104,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             mc_diffi = str(dat["Data"]["Difficulty"])
             mc_hardcore = str(dat["Data"]["hardcore"])
             mc_igt = str(dat["Data"]["Time"])
+            mc_igt = int(mc_igt) - 1
             mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
             mc_moded = str(dat["Data"]["WasModded"])
             mc_sec = int(mc_igt) / 20
@@ -141,11 +144,12 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             elif mc_moded == "0":
                 mc_moded = False
             
-            if mc_isend == "0":    
+            if mc_isend == "0":
                     self.igtHr.setText(str(hr))
                     self.igtMin.setText(str(min))
                     self.igtSec.setText(str(sec))
                     self.igtPoint.setText(ms)
+                    self.auto_stop = False
             elif mc_isend == "1":
                 if self.auto_stop == False:
                     self.igtHr.setText(str(hr))
@@ -153,6 +157,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     self.igtSec.setText(str(sec))
                     self.igtPoint.setText(ms)
                     self.auto_stop = True
+
                 
 
             print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{str(hr)}hour {str(min)} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\nCtime: {str(ctime)}\n{mc_isend}")
