@@ -6,6 +6,7 @@ import keyboard
 import webbrowser
 from nbt.nbt import NBTFile
 import getpass
+import datetime
 
 import PyQt5
 from PyQt5.QtGui import *
@@ -88,6 +89,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         for w in worlds_recently_modified.copy()[:3]:
             world = w
             dat = NBTFile(os.path.join(world, "level.dat"))
+            ctime = os.path.getctime(world)
+            ctime = datetime.datetime.fromtimestamp(ctime)
             if not int(str(dat["Data"]["Time"])):
                 continue
             else:
@@ -96,10 +99,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         mc_version = str(dat["Data"]["Version"]["Name"])
         mc_diffi = str(dat["Data"]["Difficulty"])
         mc_hardcore = str(dat["Data"]["hardcore"])
-        mc_igt = str(dat["Data"]["DayTime"])
+        mc_igt = str(dat["Data"]["Time"])
         mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
         mc_moded = str(dat["Data"]["WasModded"])
-        mc_sec = int(mc_igt)/20
+        mc_sec = int(mc_igt) / 20
         mc_isend = False
         if mc_version == "1.16.1":
             self.version.setCurrentText("1.16.1")
@@ -109,10 +112,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         dot = str(mc_sec)
         dot = dot.index(".")
         intsec = str(mc_sec)[:int(dot)]
-        realsec = int(intsec) % 60
-        min = int(intsec) / 60 % 60
-        min = int(min)
-        min = str(min)
+        min = int(intsec) // 60
+        hr = min // 60
+        sec = int(intsec) % 60
+        min = min % 60
         ms = str(mc_sec)[int(dot) + 1:]
         if len(ms) == 2:
             ms = ms + "0"
@@ -135,7 +138,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             mc_moded = False
         
 
-        print(f"{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{min} min {realsec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}")
+        print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{str(hr)}hour {str(min)} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\n Ctime: {str(ctime)}")
         if mc_diffi == "Easy":
             self.diffiBox.setCurrentText("Easy")
         elif mc_diffi == "Normal":
@@ -150,8 +153,9 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         elif mc_moded == False:
             self.Mods.setCurrentText("Vanilla")
 
-        self.igtMin.setText(min)
-        self.igtSec.setText(str(realsec))
+        self.igtHr.setText(str(hr))
+        self.igtMin.setText(str(min))
+        self.igtSec.setText(str(sec))
         self.igtPoint.setText(ms)
 
 
@@ -162,6 +166,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         rtMin = self.rtMin.text()
         rtSec = self.rtSec.text()
         rtPoint = self.rtPoint.text()
+        igtHr = self.igtHr.text()
         igtMin = self.igtMin.text()
         igtSec = self.igtSec.text()
         igtPoint = self.igtPoint.text()
