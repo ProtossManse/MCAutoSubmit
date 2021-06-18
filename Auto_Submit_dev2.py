@@ -144,7 +144,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             mc_diffi = str(dat["Data"]["Difficulty"])
             mc_hardcore = str(dat["Data"]["hardcore"])
             mc_igt = str(dat["Data"]["Time"])
-            mc_igt = int(mc_igt) - 1
+            mc_igt = int(mc_igt) - 2
             mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
             mc_moded = str(dat["Data"]["WasModded"])
             mc_sec = int(mc_igt) / 20
@@ -240,7 +240,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
         # webbrowser.open("https://www.speedrun.com/mc")
         # QtTest.QTest.qWait(4000)
-        # pag.click(submitbtn)
+        # pag.click(submitbtn)z
         # pag.moveTo(1300, 270)
         # pag.click()
         # QtTest.QTest.qWait(1500)
