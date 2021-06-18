@@ -55,7 +55,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.pathButton.clicked.connect(self.browse)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.pathLine.setText(path)
-        
+        self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
+        self.auto_stop = False
 
 
     def seedClicked(self):
@@ -82,81 +83,96 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
     def auto(self):
-        mc_dir = path
-        mc_saves = os.path.join(mc_dir, "saves")
+        try:
+            mc_dir = path
+            mc_saves = os.path.join(mc_dir, "saves")
 
-        worlds_recently_modified = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
-        for w in worlds_recently_modified.copy()[:3]:
-            world = w
-            dat = NBTFile(os.path.join(world, "level.dat"))
-            ctime = os.path.getctime(world)
-            ctime = datetime.datetime.fromtimestamp(ctime)
-            if not int(str(dat["Data"]["Time"])):
-                continue
+            worlds_recently_modified = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
+            for w in worlds_recently_modified.copy()[:3]:
+                world = w
+                dat = NBTFile(os.path.join(world, "level.dat"))
+                ctime = os.path.getctime(world)
+                ctime = datetime.datetime.fromtimestamp(ctime)
+                if not int(str(dat["Data"]["Time"])):
+                    continue
+                else:
+                    break
+            
+            mc_version = str(dat["Data"]["Version"]["Name"])
+            mc_diffi = str(dat["Data"]["Difficulty"])
+            mc_hardcore = str(dat["Data"]["hardcore"])
+            mc_igt = str(dat["Data"]["Time"])
+            mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
+            mc_moded = str(dat["Data"]["WasModded"])
+            mc_sec = int(mc_igt) / 20
+            mc_isend = str(dat["Data"]["Player"]["seenCredits"])
+            if mc_version == "1.16.1":
+                self.version.setCurrentText("1.16.1")
             else:
-                break
+                self.version.setCurrentText("Other")
+            
+
+
+            dot = str(mc_sec)
+            dot = dot.index(".")
+            intsec = str(mc_sec)[:int(dot)]
+            min = int(intsec) // 60
+            hr = min // 60
+            sec = int(intsec) % 60
+            min = min % 60
+            ms = str(mc_sec)[int(dot) + 1:]
+            if len(ms) == 2:
+                ms = ms + "0"
+            elif len(ms) == 1:
+                ms = ms + "00"
+
+            self.sText.setText("Seed: " + mc_seed)
+            if mc_hardcore == "1":
+                mc_diffi = "Hardcore"
+            elif mc_hardcore == "0":
+                if mc_diffi == "1":
+                    mc_diffi = "Easy"
+                elif mc_diffi == "2":
+                    mc_diffi = "Normal"
+                elif mc_diffi == "3":
+                    mc_diffi = "Hard"
+            if mc_moded == "1":
+                mc_moded = True
+            elif mc_moded == "0":
+                mc_moded = False
+            
+            if mc_isend == "0":    
+                    self.igtHr.setText(str(hr))
+                    self.igtMin.setText(str(min))
+                    self.igtSec.setText(str(sec))
+                    self.igtPoint.setText(ms)
+            elif mc_isend == "1":
+                if self.auto_stop == False:
+                    self.igtHr.setText(str(hr))
+                    self.igtMin.setText(str(min))
+                    self.igtSec.setText(str(sec))
+                    self.igtPoint.setText(ms)
+                    self.auto_stop = True
+                
+
+            print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{str(hr)}hour {str(min)} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\nCtime: {str(ctime)}\n{mc_isend}")
+            if mc_diffi == "Easy":
+                self.diffiBox.setCurrentText("Easy")
+            elif mc_diffi == "Normal":
+                self.diffiBox.setCurrentText("Normal")
+            elif mc_diffi == "Hard":
+                self.diffiBox.setCurrentText("Hard")
+            elif mc_diffi == "Hardcore":
+                self.diffiBox.setCurrentText("Hardcore")
+
+            if mc_moded == True:
+                self.Mods.setCurrentText("CaffeineMC")
+            elif mc_moded == False:
+                self.Mods.setCurrentText("Vanilla")
+        except:
+            QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
+
         
-        mc_version = str(dat["Data"]["Version"]["Name"])
-        mc_diffi = str(dat["Data"]["Difficulty"])
-        mc_hardcore = str(dat["Data"]["hardcore"])
-        mc_igt = str(dat["Data"]["Time"])
-        mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
-        mc_moded = str(dat["Data"]["WasModded"])
-        mc_sec = int(mc_igt) / 20
-        mc_isend = False
-        if mc_version == "1.16.1":
-            self.version.setCurrentText("1.16.1")
-        else:
-            self.version.setCurrentText("Other")
-
-        dot = str(mc_sec)
-        dot = dot.index(".")
-        intsec = str(mc_sec)[:int(dot)]
-        min = int(intsec) // 60
-        hr = min // 60
-        sec = int(intsec) % 60
-        min = min % 60
-        ms = str(mc_sec)[int(dot) + 1:]
-        if len(ms) == 2:
-            ms = ms + "0"
-        elif len(ms) == 1:
-            ms = ms + "00"
-
-        self.sText.setText("Seed: " + mc_seed)
-        if mc_hardcore == "1":
-            mc_diffi = "Hardcore"
-        elif mc_hardcore == "0":
-            if mc_diffi == "1":
-                mc_diffi = "Easy"
-            elif mc_diffi == "2":
-                mc_diffi = "Normal"
-            elif mc_diffi == "3":
-                mc_diffi = "Hard"
-        if mc_moded == "1":
-            mc_moded = True
-        elif mc_moded == "0":
-            mc_moded = False
-        
-
-        print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{str(hr)}hour {str(min)} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\n Ctime: {str(ctime)}")
-        if mc_diffi == "Easy":
-            self.diffiBox.setCurrentText("Easy")
-        elif mc_diffi == "Normal":
-            self.diffiBox.setCurrentText("Normal")
-        elif mc_diffi == "Hard":
-            self.diffiBox.setCurrentText("Hard")
-        elif mc_diffi == "Hardcore":
-            self.diffiBox.setCurrentText("Hardcore")
-
-        if mc_moded == True:
-            self.Mods.setCurrentText("CaffeineMC")
-        elif mc_moded == False:
-            self.Mods.setCurrentText("Vanilla")
-
-        self.igtHr.setText(str(hr))
-        self.igtMin.setText(str(min))
-        self.igtSec.setText(str(sec))
-        self.igtPoint.setText(ms)
 
 
 #-------------------------------------------macro--------------------- 

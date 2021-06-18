@@ -28,70 +28,9 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>AutoSubmit v0.5</string>
+   <string>MCAutoSubmit v0.6</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="ytLink">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>150</y>
-      <width>201</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Video Link(Manual)</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="rtPoint">
-    <property name="geometry">
-     <rect>
-      <x>123</x>
-      <y>200</y>
-      <width>31</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>000</string>
-    </property>
-    <property name="maxLength">
-     <number>3</number>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="igtHr">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>150</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>00</string>
-    </property>
-    <property name="maxLength">
-     <number>2</number>
-    </property>
-    <property name="frame">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>180</y>
-      <width>111</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Real Time(Manual):</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="f3Button">
     <property name="geometry">
      <rect>
@@ -105,66 +44,10 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>200</y>
-      <width>16</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>m</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="diffiBox">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>100</y>
-      <width>91</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>Easy</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Normal</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Hard</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Hardcore</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>151</y>
-      <width>16</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>s</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="seedbutton">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>20</y>
       <width>81</width>
       <height>23</height>
@@ -174,42 +57,10 @@
      <string>Change Seed</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="igtPoint">
-    <property name="geometry">
-     <rect>
-      <x>123</x>
-      <y>150</y>
-      <width>31</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>000</string>
-    </property>
-    <property name="maxLength">
-     <number>3</number>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="rtaHr">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>200</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>00</string>
-    </property>
-    <property name="maxLength">
-     <number>2</number>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="pathLine">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>40</x>
       <y>320</y>
       <width>291</width>
       <height>23</height>
@@ -219,83 +70,10 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>150</y>
-      <width>16</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>m</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>35</x>
-      <y>150</y>
-      <width>16</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>h</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="version">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>100</y>
-      <width>61</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>1.16.1</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Other</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QPushButton" name="resetButton">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>180</y>
-      <width>201</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Refresh
-(Esc)</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>130</y>
-      <width>101</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>In-Game Time:</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="sText">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>50</y>
       <width>271</width>
       <height>21</height>
@@ -308,62 +86,10 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_12">
-    <property name="geometry">
-     <rect>
-      <x>35</x>
-      <y>200</y>
-      <width>16</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>h</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="Mods">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>100</y>
-      <width>91</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="currentText">
-     <string>Vanilla</string>
-    </property>
-    <item>
-     <property name="text">
-      <string>Vanilla</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>CaffeineMC</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLineEdit" name="rtMin">
-    <property name="geometry">
-     <rect>
-      <x>45</x>
-      <y>200</y>
-      <width>21</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>00</string>
-    </property>
-    <property name="maxLength">
-     <number>2</number>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_10">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>40</x>
       <y>300</y>
       <width>41</width>
       <height>16</height>
@@ -377,22 +103,6 @@
     </property>
     <property name="text">
      <string>Path:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="igtSec">
-    <property name="geometry">
-     <rect>
-      <x>85</x>
-      <y>150</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>00</string>
-    </property>
-    <property name="maxLength">
-     <number>2</number>
     </property>
    </widget>
    <widget class="QCheckBox" name="f3Box">
@@ -421,28 +131,12 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="igtMin">
-    <property name="geometry">
-     <rect>
-      <x>45</x>
-      <y>150</y>
-      <width>21</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>00</string>
-    </property>
-    <property name="maxLength">
-     <number>2</number>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>40</x>
       <y>240</y>
-      <width>361</width>
+      <width>331</width>
       <height>55</height>
      </rect>
     </property>
@@ -458,10 +152,10 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="pathButton">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>340</x>
       <y>320</y>
-      <width>71</width>
-      <height>24</height>
+      <width>61</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="text">
@@ -474,7 +168,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>130</x>
       <y>360</y>
       <width>161</width>
       <height>31</height>
@@ -484,114 +178,10 @@ p, li { white-space: pre-wrap; }
      <string>Submit</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>201</y>
-      <width>16</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>s</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="rtSec">
-    <property name="geometry">
-     <rect>
-      <x>85</x>
-      <y>200</y>
-      <width>21</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>00</string>
-    </property>
-    <property name="maxLength">
-     <number>2</number>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="seedType">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>100</y>
-      <width>61</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="currentText">
-     <string>RSG</string>
-    </property>
-    <item>
-     <property name="text">
-      <string>RSG</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>SSG</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>82</y>
-      <width>56</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Version:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_8">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>82</y>
-      <width>91</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Difficulty:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_9">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>80</y>
-      <width>91</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Mods:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_13">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>80</y>
-      <width>131</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Seed Type:</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>210</x>
       <y>20</y>
       <width>81</width>
       <height>23</height>
@@ -603,11 +193,438 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;Only 1.16.1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600; color:#ff0000;&quot;&gt;Only 1.16.1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>381</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>​</string>
+    </property>
+    <widget class="QComboBox" name="diffiBox">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>30</y>
+       <width>91</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Easy</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Normal</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Hard</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Hardcore</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="Mods">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>30</y>
+       <width>91</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="currentText">
+      <string>Vanilla</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Vanilla</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CaffeineMC</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>81</y>
+       <width>16</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>s</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>35</x>
+       <y>80</y>
+       <width>16</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>h</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="version">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>61</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>1.16.1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Other</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>130</y>
+       <width>16</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>m</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="ytLink">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>80</y>
+       <width>201</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Video Link(Manual)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>12</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Seed Type:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>12</y>
+       <width>56</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Version:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="igtSec">
+     <property name="geometry">
+      <rect>
+       <x>85</x>
+       <y>80</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="maxLength">
+      <number>2</number>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="rtaHr">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="maxLength">
+      <number>2</number>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="rtPoint">
+     <property name="geometry">
+      <rect>
+       <x>123</x>
+       <y>130</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>000</string>
+     </property>
+     <property name="maxLength">
+      <number>3</number>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="rtSec">
+     <property name="geometry">
+      <rect>
+       <x>85</x>
+       <y>130</y>
+       <width>21</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="maxLength">
+      <number>2</number>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="rtMin">
+     <property name="geometry">
+      <rect>
+       <x>45</x>
+       <y>130</y>
+       <width>21</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="maxLength">
+      <number>2</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>101</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>In-Game Time:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>12</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Mods:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Real Time(Manual):</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>131</y>
+       <width>16</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>s</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="igtMin">
+     <property name="geometry">
+      <rect>
+       <x>45</x>
+       <y>80</y>
+       <width>21</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="maxLength">
+      <number>2</number>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="igtPoint">
+     <property name="geometry">
+      <rect>
+       <x>123</x>
+       <y>80</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>000</string>
+     </property>
+     <property name="maxLength">
+      <number>3</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>35</x>
+       <y>130</y>
+       <width>16</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>h</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="resetButton">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>110</y>
+       <width>201</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Refresh
+(Esc)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>12</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Difficulty:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>80</y>
+       <width>16</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>m</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="seedType">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>30</y>
+       <width>61</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="currentText">
+      <string>RSG</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>RSG</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SSG</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLineEdit" name="igtHr">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00</string>
+     </property>
+     <property name="maxLength">
+      <number>2</number>
+     </property>
+     <property name="frame">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="sizeGripEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
