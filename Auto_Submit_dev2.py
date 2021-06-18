@@ -35,7 +35,7 @@ def resource_path(relative_path):
 
 macUI = resource_path("autosubmit.ui")
 macUI = str(macUI)
-ico = resource_path("MCAutoSubmit.png")
+ico = resource_path("MCAutoSubmit2.png")
 
 Ui_MainWindow = uic.loadUiType(macUI)[0]
 
