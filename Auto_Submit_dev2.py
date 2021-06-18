@@ -6,7 +6,6 @@ import keyboard
 import webbrowser
 from nbt.nbt import NBTFile
 import getpass
-from PIL import ImageGrab
 
 import PyQt5
 from PyQt5.QtGui import *
@@ -36,14 +35,12 @@ def resource_path(relative_path):
 macUI = resource_path("autosubmit.ui")
 macUI = str(macUI)
 
-# print(macUI)
 
 Ui_MainWindow = uic.loadUiType(macUI)[0]
 
 
 
 
-# macUI = os.path.join(os.path.dirname(os.path.realpath(__file__)), "autosubmit.ui")
     
  
 class MainDialog(QMainWindow, Ui_MainWindow):
@@ -51,7 +48,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
 
-        # # PyQt5.uic.loadUi(str(macUI), self)
         self.seedbutton.clicked.connect(self.seedClicked)
         self.resetButton.clicked.connect(self.auto)
         self.startButton.clicked.connect(self.macro1)
