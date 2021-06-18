@@ -44,7 +44,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="seedbutton">
+   <widget class="QPushButton" name="seedButton">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -181,7 +181,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>160</x>
       <y>20</y>
       <width>81</width>
       <height>23</height>
@@ -618,6 +618,26 @@ p, li { white-space: pre-wrap; }
       <bool>true</bool>
      </property>
     </widget>
+   </widget>
+   <widget class="QComboBox" name="langBox">
+    <property name="geometry">
+     <rect>
+      <x>335</x>
+      <y>20</y>
+      <width>61</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>English</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>한국어</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar">

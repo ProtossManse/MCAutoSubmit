@@ -50,14 +50,18 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowIcon(QIcon(ico))
 
-        self.seedbutton.clicked.connect(self.seedClicked)
+        self.seedButton.clicked.connect(self.seedClicked)
         self.resetButton.clicked.connect(self.auto)
         self.startButton.clicked.connect(self.macro1)
         self.pathButton.clicked.connect(self.browse)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.pathLine.setText(path)
+        QMessageBox.information(self, "Credits", "MCAutoSubmit by ProtossManse with Haru.\n\nIcon by ChobojaX.")
         self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
         self.auto_stop = False
+        self.langBox.currentIndexChanged.connect(self.lang)
+
+
 
 
     def seedClicked(self):
@@ -72,7 +76,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             if event.name == 'f3':
                 self.f3Box.setChecked(True)
             if event.name == 'esc':
-                QtTest.QTest.qWait(200)
+                QtTest.QTest.qWait(350)
                 self.auto()
         
     def browse(self):
@@ -82,6 +86,43 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', path)
         if path != "":
             self.pathLine.setText(str(path))
+
+    def lang(self):
+        
+        if self.langBox.currentText() == "한국어":
+            self.seedButton.setText("시드 변경")
+            self.label_2.setText("Real Time (수동):")
+            self.label_7.setText("버전:")
+            self.label_8.setText("난이도:")
+            self.label_9.setText("모드:")
+            self.label_13.setText("시드 타입:")
+            self.label_10.setText("경로:")
+            self.pathButton.setText("찾기...")
+            self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#ff0000;\">1.16.1 전용</span></p></body></html>")
+            self.startButton.setText("제출")
+            self.resetButton.setText("새로고침\n(Esc)")
+            if self.ytLink.text() == "Video Link(Manual)":
+                self.ytLink.setText("동영상 링크 (수동)")
+            if self.textEdit.toPlainText() == "Description (Manual)\nDo not enter the seed.":
+                self.textEdit.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">설명 (수동)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">시드를 입력하지 마세요.</p></body></html>")
+        elif self.langBox.currentText() == "English":
+            self.seedButton.setText("Change Seed")
+            self.label_2.setText("Real Time(Manual):")
+            self.label_7.setText("Version:")
+            self.label_8.setText("Difficulty:")
+            self.label_9.setText("Mods:")
+            self.label_13.setText("Seed Type:")
+            self.label_10.setText("Path:")
+            self.pathButton.setText("Browse...")
+            self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#ff0000;\">Only 1.16.1</span></p></body></html>")
+            self.startButton.setText("Submit")
+            self.resetButton.setText("Refresh\n(Esc)")
+            if self.ytLink.text() == "동영상 링크 (수동)":
+                self.ytLink.setText("Video Link(Manual)")
+            if self.textEdit.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요.":
+                self.textEdit.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>")
+            
+        
 
 
     def auto(self):
