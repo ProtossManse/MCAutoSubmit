@@ -6,6 +6,7 @@ import keyboard
 import webbrowser
 from nbt.nbt import NBTFile
 import getpass
+from PIL import ImageGrab
 
 import PyQt5
 from PyQt5.QtGui import *
@@ -15,13 +16,13 @@ from PyQt5 import uic
 from PyQt5 import QtTest
 
 username = getpass.getuser()
-userpath = os.path.join("C:\\Users",username,"AppData\\Roaming")
-path = userpath + "\\.minecraft"
+path = os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")
+
+
+
 
 def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
         print(base_path)
     except Exception:
@@ -30,6 +31,7 @@ def resource_path(relative_path):
 
 
     return os.path.join(base_path, relative_path)
+
 
 macUI = resource_path("autosubmit.ui")
 macUI = str(macUI)
@@ -55,8 +57,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.startButton.clicked.connect(self.macro1)
         self.pathButton.clicked.connect(self.browse)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
-        self.resetButton.setStyleSheet("background-color : #65FF01")
-        self.pathLine.setText(userpath)
+        self.pathLine.setText(path)
         
 
 
@@ -78,7 +79,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         global path
         pathops = QFileDialog.Options()
         pathops |= QFileDialog.ShowDirsOnly
-        path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', userpath)
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', path)
         if path != "":
             self.pathLine.setText(str(path))
 
@@ -103,6 +104,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
         mc_moded = str(dat["Data"]["WasModded"])
         mc_sec = int(mc_igt)/20
+        if mc_version == "1.16.1":
+            self.version.setCurrentText("Other")
 
         dot = str(mc_sec)
         dot = dot.index(".")
@@ -169,109 +172,112 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         diffi = self.diffiBox.currentText()
         ytlink = self.ytLink.text()
         desc = self.sText.text()
+
+
         webbrowser.open("https://www.speedrun.com/mc")
-        QtTest.QTest.qWait(2000)
-        pag.moveTo(1300, 270)
-        pag.click()
-        QtTest.QTest.qWait(1500)
-        pag.moveTo(990, 380)
-        pag.click()
-        pag.typewrite(rtMin)
-        pag.moveTo(1070, 380)
-        pag.click()
-        pag.typewrite(rtSec)
-        pag.moveTo(1150, 380)
-        pag.click()
-        pag.typewrite(rtPoint)
-        pag.moveTo(990, 440)
-        pag.click()
-        pag.typewrite(igtMin)
-        pag.moveTo(1070, 440)
-        pag.click()
-        pag.typewrite(igtSec)
-        pag.moveTo(1150, 440)
-        pag.click()
-        pag.typewrite(igtPoint)
-        pag.moveTo(1000, 500)
-        pag.click()
+        QtTest.QTest.qWait(4000)
+        # pag.click(submitbtn)
+        # pag.moveTo(1300, 270)
+        # pag.click()
+        # QtTest.QTest.qWait(1500)
+        # pag.moveTo(990, 380)
+        # pag.click()
+        # pag.typewrite(rtMin)
+        # pag.moveTo(1070, 380)
+        # pag.click()
+        # pag.typewrite(rtSec)
+        # pag.moveTo(1150, 380)
+        # pag.click()
+        # pag.typewrite(rtPoint)
+        # pag.moveTo(990, 440)
+        # pag.click()
+        # pag.typewrite(igtMin)
+        # pag.moveTo(1070, 440)
+        # pag.click()
+        # pag.typewrite(igtSec)
+        # pag.moveTo(1150, 440)
+        # pag.click()
+        # pag.typewrite(igtPoint)
+        # pag.moveTo(1000, 500)
+        # pag.click()
 
-        if version == "1.16.1":
-            pag.moveTo(1000,536)
-            pag.click()
-        elif version == "1.14.4":
-            pag.moveTo(1000,550)
-            pag.click()
-        elif version == "1.7.2":
-            pag.moveTo(1000,568)
-            pag.click()
-        elif version == "1.7.10":
-            pag.moveTo(1000,590)
-            pag.click()
-        elif version == "1.8.9":
-            pag.moveTo(1000,604)
-            pag.click()
-        elif version == "1.6.4":
-            pag.moveTo(1000,625)
-            pag.click()
+        # if version == "1.16.1":
+        #     pag.moveTo(1000,536)
+        #     pag.click()
+        # elif version == "1.14.4":
+        #     pag.moveTo(1000,550)
+        #     pag.click()
+        # elif version == "1.7.2":
+        #     pag.moveTo(1000,568)
+        #     pag.click()
+        # elif version == "1.7.10":
+        #     pag.moveTo(1000,590)
+        #     pag.click()
+        # elif version == "1.8.9":
+        #     pag.moveTo(1000,604)
+        #     pag.click()
+        # elif version == "1.6.4":
+        #     pag.moveTo(1000,625)
+        #     pag.click()
 
-        pag.moveTo(1000,550)
-        pag.click()
+        # pag.moveTo(1000,550)
+        # pag.click()
 
-        if diffi == "Easy":
-            pag.moveTo(1000,590)
-            pag.click()
-        elif diffi == "Normal":
-            pag.moveTo(1000,607)
-            pag.click()
-        elif diffi == "Hard":
-            pag.moveTo(1000,622)
-            pag.click()
-        elif diffi == "Hardcore":
-            pag.moveTo(1000,642)
-            pag.click()
+        # if diffi == "Easy":
+        #     pag.moveTo(1000,590)
+        #     pag.click()
+        # elif diffi == "Normal":
+        #     pag.moveTo(1000,607)
+        #     pag.click()
+        # elif diffi == "Hard":
+        #     pag.moveTo(1000,622)
+        #     pag.click()
+        # elif diffi == "Hardcore":
+        #     pag.moveTo(1000,642)
+        #     pag.click()
 
-        if seedType == "SSG":
-            pag.moveTo(1000,600)
-            pag.click()
-            pag.moveTo(1000,625)
-            pag.click()
+        # if seedType == "SSG":
+        #     pag.moveTo(1000,600)
+        #     pag.click()
+        #     pag.moveTo(1000,625)
+        #     pag.click()
 
-        pag.moveTo(1000,650)
-        pag.click()
-        if version == "1.16.1":
-            pag.moveTo(1000,710)
-            pag.click()
-        elif version == "1.14.4" or "1.15.2":
-            pag.moveTo(1000,695)
-            pag.click()
-        else:
-            pag.moveTo(1000,680)
-            pag.click()
-        if self.f3Box.isChecked() == False:
-            pag.moveTo(1000,700)
-            pag.click()
-            pag.moveTo(1000,750)
-            pag.click()
+        # pag.moveTo(1000,650)
+        # pag.click()
+        # if version == "1.16.1":
+        #     pag.moveTo(1000,710)
+        #     pag.click()
+        # elif version == "1.14.4" or "1.15.2":
+        #     pag.moveTo(1000,695)
+        #     pag.click()
+        # else:
+        #     pag.moveTo(1000,680)
+        #     pag.click()
+        # if self.f3Box.isChecked() == False:
+        #     pag.moveTo(1000,700)
+        #     pag.click()
+        #     pag.moveTo(1000,750)
+        #     pag.click()
 
-        pag.moveTo(1000,750)
-        pag.click()
+        # pag.moveTo(1000,750)
+        # pag.click()
 
-        if Mods == "Vanilla":
-            pag.click()
-        elif Mods == "Optifine":
-            pag.moveTo(1000,800)
-            pag.click()
-        elif Mods == "CaffeineMC":
-            pag.moveTo(1000,820)
-            pag.click()
+        # if Mods == "Vanilla":
+        #     pag.click()
+        # elif Mods == "Optifine":
+        #     pag.moveTo(1000,800)
+        #     pag.click()
+        # elif Mods == "CaffeineMC":
+        #     pag.moveTo(1000,820)
+        #     pag.click()
 
-        pag.scroll(-1000)
-        pag.moveTo(1000,490)
-        pag.click()
-        pag.typewrite(ytlink)
-        pag.moveTo(1000,600)
-        pag.click()
-        pag.typewrite(desc)
+        # pag.scroll(-1000)
+        # pag.moveTo(1000,490)
+        # pag.click()
+        # pag.typewrite(ytlink)
+        # pag.moveTo(1000,600)
+        # pag.click()
+        # pag.typewrite(desc)
 
 
 
