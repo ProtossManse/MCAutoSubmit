@@ -100,7 +100,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
         mc_moded = str(dat["Data"]["WasModded"])
         mc_sec = int(mc_igt)/20
+        mc_isend = False
         if mc_version == "1.16.1":
+            self.version.setCurrentText("1.16.1")
+        else:
             self.version.setCurrentText("Other")
 
         dot = str(mc_sec)
