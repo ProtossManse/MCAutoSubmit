@@ -1,4 +1,4 @@
-# Auto-Submit
+# MCAutoSubmit
 
 the Minecraft: Java Edition speedrun.com Auto Submit Program.
 
