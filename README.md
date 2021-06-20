@@ -13,3 +13,7 @@ Only 1.16.1 Support
 알파버전(미완성)입니다.
 
 1.16.1 전용
+
+MCAutoSubmit by ProtossManse with Haru
+
+Icon by ChobojaX
