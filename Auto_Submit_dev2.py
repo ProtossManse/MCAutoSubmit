@@ -144,7 +144,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             mc_diffi = str(dat["Data"]["Difficulty"])
             mc_hardcore = str(dat["Data"]["hardcore"])
             mc_igt = str(dat["Data"]["Time"])
-            mc_igt = int(mc_igt) - 2
+            mc_igt = int(mc_igt) - 1
             mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
             mc_moded = str(dat["Data"]["WasModded"])
             mc_sec = int(mc_igt) / 20
