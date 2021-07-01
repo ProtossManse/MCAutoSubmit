@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets
+from numpy import concatenate
 import pyautogui as pag
 import sys
 import os
@@ -6,6 +7,7 @@ import keyboard
 from nbt.nbt import NBTFile
 import getpass
 import datetime
+import webbrowser
 
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -33,7 +35,7 @@ def resource_path(relative_path):
 
 macUI = resource_path("autosubmit.ui")
 macUI = str(macUI)
-ico = resource_path("MCAutoSubmit2.png")
+ico = resource_path("MCAutoSubmit.png")
 
 Ui_MainWindow = uic.loadUiType(macUI)[0]
 
@@ -54,13 +56,14 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.pathButton.clicked.connect(self.browse)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.pathLine.setText(path)
-        QMessageBox.information(self, "Credits", "MCAutoSubmit by ProtossManse with Haru.\n\nIcon by ChobojaX.")
-        self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
         self.auto_stop = False
         self.langBox.currentIndexChanged.connect(self.lang)
+        self.creditLabel.mousePressEvent = self.credit
+        self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
 
-
-
+    def credit(self, event):
+        QMessageBox.information(self, "Credits", "MCAutoSubmit by ProtossManse with Haru.\n\nIcon by ChobojaX.")
+        
 
     def seedClicked(self):
         seed, ok1 = QInputDialog.getText(self, "Change Seed", "<font face=\"Malgun Gothic\">Seed:</font>")
@@ -101,8 +104,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.resetButton.setText("새로고침\n(Esc)")
             if self.ytLink.text() == "Video Link(Manual)":
                 self.ytLink.setText("동영상 링크 (수동)")
-            if self.textEdit.toPlainText() == "Description (Manual)\nDo not enter the seed.":
-                self.textEdit.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">설명 (수동)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">시드를 입력하지 마세요.</p></body></html>")
+            if self.descriptionText.toPlainText() == "Description (Manual)\nDo not enter the seed.":
+                self.descriptionText.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">설명 (수동)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">시드를 입력하지 마세요.</p></body></html>")
         elif self.langBox.currentText() == "English":
             self.seedButton.setText("Change Seed")
             self.label_2.setText("Real Time(Manual):")
@@ -127,8 +130,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             mc_dir = path
             mc_saves = os.path.join(mc_dir, "saves")
 
-            worlds_recently_modified = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
-            for w in worlds_recently_modified.copy()[:3]:
+            wrm = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
+            for w in wrm.copy()[:3]:
                 world = w
                 dat = NBTFile(os.path.join(world, "level.dat"))
                 ctime = os.path.getctime(world)
@@ -221,125 +224,123 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
     def macro1(self):
+
+        rtHour = self.rtaHr.text()
         rtMin = self.rtMin.text()
-        # rtSec = self.rtSec.text()
-        # rtPoint = self.rtPoint.text()
-        # igtHr = self.igtHr.text()
-        # igtMin = self.igtMin.text()
-        # igtSec = self.igtSec.text()
-        # igtPoint = self.igtPoint.text()
-        # version = self.version.currentText()
-        # seedType = self.seedType.currentText()
-        # Mods = self.Mods.currentText()
-        # diffi = self.diffiBox.currentText()
-        # ytlink = self.ytLink.text()
-        # desc = self.sText.text()
+        rtSec = self.rtSec.text()
+        rtPoint = self.rtPoint.text()
+        igtHr = self.igtHr.text()
+        igtMin = self.igtMin.text()
+        igtSec = self.igtSec.text()
+        igtPoint = self.igtPoint.text()
+        seedType = self.seedType.currentText()
+        mods = self.Mods.currentText()
+        diffi = self.diffiBox.currentText()
+        ytlink = self.ytLink.text()
+        seed = self.sText.text()
+        desc = self.descriptionText.toPlainText()
+
+        webbrowser.open("https://www.speedrun.com/mc")
+        QtTest.QTest.qWait(1000)
+        submit = pag.locateCenterOnScreen(resource_path('submit.png'), confidence=0.7)
+        while submit == None:
+            QtTest.QTest.qWait(1000)
+            submit = pag.locateCenterOnScreen(resource_path('submit.png'), confidence=0.7)
+        pag.click(submit)
+        QtTest.QTest.qWait(500)
+        rtm = pag.locateCenterOnScreen(resource_path('RT.png'), confidence=0.7)
+        while rtm == None:
+            QtTest.QTest.qWait(1000)
+            rtm = pag.locateCenterOnScreen(resource_path('RT.png'), confidence=0.7)
+        if rtm != None:
+            pag.moveTo(rtm)
+            pag.moveRel(80, 0)
+            pag.click()
+            pag.typewrite(rtHour)
+            pag.moveRel(80, 0)
+            pag.click()
+            pag.typewrite(rtMin)
+            pag.moveRel(80, 0)
+            pag.click()
+            pag.typewrite(rtSec)
+            pag.moveRel(80, 0)
+            pag.click()
+            pag.typewrite(rtPoint)
+        igtm = pag.locateCenterOnScreen(resource_path('IGT.png'), confidence=0.7)
+        if igtm != None:
+            pag.moveTo(igtm)
+            pag.moveRel(80, 0)
+            pag.click()
+            pag.typewrite(igtHr)
+            pag.moveRel(80, 0)
+            pag.click()
+            pag.typewrite(igtMin)
+            pag.moveRel(80, 0)
+            pag.click()
+            pag.typewrite(igtSec)
+            pag.moveRel(80, 0)
+            pag.click()
+            pag.typewrite(igtPoint)
+        macrovar = pag.locateCenterOnScreen(resource_path('version.png'), confidence=0.7)
+        if macrovar != None:
+            pag.moveTo(macrovar)
+            pag.moveRel(300,0)
+            pag.click()
+        macrovar = pag.locateCenterOnScreen(resource_path('1_16_1.png'), confidence=0.7)
+        if macrovar != None:
+            pag.click(macrovar)
+        macrovar = pag.locateCenterOnScreen(resource_path('difficulty.png'), confidence=0.7)
+        if macrovar != None:
+            pag.moveTo(macrovar)
+            pag.moveRel(280, 0)
+            pag.click()
+        if diffi == "Easy":
+            diffimac = pag.locateCenterOnScreen(resource_path('easy.png'),confidence=0.7)
+            pag.click(diffimac)
+        elif diffi == "Normal":
+            diffimac = pag.locateCenterOnScreen(resource_path('normal.png'),confidence=0.7)
+            pag.click(diffimac)
+        elif diffi == "Hard":
+            diffimac = pag.locateCenterOnScreen(resource_path('hard.png'),confidence=0.7)
+            pag.click(diffimac)
+        elif diffi == "Hardcore":
+            diffimac = pag.locateCenterOnScreen(resource_path('normal.png'),confidence=0.7)
+            pag.click(diffimac)
+
+        if seedType == "SSG":
+            macrovar = pag.locateCenterOnScreen(resource_path('seed_type.png'), confidence=0.7)
+            if macrovar != None:
+                pag.moveTo(macrovar)
+                pag.moveRel(280,0)
+                pag.click()
+                macrovar = pag.locateCenterOnScreen(resource_path('ssg.png'), confidence=0.7)
+                pag.click(macrovar)
+        if self.f3Box.isChecked() == False:
+            macrovar = pag.locateCenterOnScreen(resource_path('f3_1.png'), confidence=0.7)
+            pag.click(macrovar)
+            macrovar = pag.locateCenterOnScreen(resource_path('f3_2.png'), confidence=0.7)
+            pag.click(macrovar)
+
+        if mods == "CaffeineMC":
+            macrovar = pag.locateCenterOnScreen(resource_path('mods.png'), confidence=0.7)
+            pag.click(macrovar)
+            macrovar = pag.locateCenterOnScreen(resource_path('caffeine.png'), confidence=0.7)
+            pag.click(macrovar)
+
+        pag.scroll(-300)
+        QtTest.QTest.qWait(500)
+        macrovar = pag.locateCenterOnScreen(resource_path('video.png'), confidence=0.7)
+        pag.click(macrovar)
+        pag.typewrite(ytlink)
+        macrovar = pag.locateCenterOnScreen(resource_path('desc.png'), confidence=0.7)
+        pag.click(macrovar)
+        pag.typewrite(seed+"\n")
+        pag.typewrite(desc)
+
+        
+        
 
 
-        # webbrowser.open("https://www.speedrun.com/mc")
-        # QtTest.QTest.qWait(4000)
-        # pag.click(submitbtn)z
-        # pag.moveTo(1300, 270)
-        # pag.click()
-        # QtTest.QTest.qWait(1500)
-        # pag.moveTo(990, 380)
-        # pag.click()
-        # pag.typewrite(rtMin)
-        # pag.moveTo(1070, 380)
-        # pag.click()
-        # pag.typewrite(rtSec)
-        # pag.moveTo(1150, 380)
-        # pag.click()
-        # pag.typewrite(rtPoint)
-        # pag.moveTo(990, 440)
-        # pag.click()
-        # pag.typewrite(igtMin)
-        # pag.moveTo(1070, 440)
-        # pag.click()
-        # pag.typewrite(igtSec)
-        # pag.moveTo(1150, 440)
-        # pag.click()
-        # pag.typewrite(igtPoint)
-        # pag.moveTo(1000, 500)
-        # pag.click()
-
-        # if version == "1.16.1":
-        #     pag.moveTo(1000,536)
-        #     pag.click()
-        # elif version == "1.14.4":
-        #     pag.moveTo(1000,550)
-        #     pag.click()
-        # elif version == "1.7.2":
-        #     pag.moveTo(1000,568)
-        #     pag.click()
-        # elif version == "1.7.10":
-        #     pag.moveTo(1000,590)
-        #     pag.click()
-        # elif version == "1.8.9":
-        #     pag.moveTo(1000,604)
-        #     pag.click()
-        # elif version == "1.6.4":
-        #     pag.moveTo(1000,625)
-        #     pag.click()
-
-        # pag.moveTo(1000,550)
-        # pag.click()
-
-        # if diffi == "Easy":
-        #     pag.moveTo(1000,590)
-        #     pag.click()
-        # elif diffi == "Normal":
-        #     pag.moveTo(1000,607)
-        #     pag.click()
-        # elif diffi == "Hard":
-        #     pag.moveTo(1000,622)
-        #     pag.click()
-        # elif diffi == "Hardcore":
-        #     pag.moveTo(1000,642)
-        #     pag.click()
-
-        # if seedType == "SSG":
-        #     pag.moveTo(1000,600)
-        #     pag.click()
-        #     pag.moveTo(1000,625)
-        #     pag.click()
-
-        # pag.moveTo(1000,650)
-        # pag.click()
-        # if version == "1.16.1":
-        #     pag.moveTo(1000,710)
-        #     pag.click()
-        # elif version == "1.14.4" or "1.15.2":
-        #     pag.moveTo(1000,695)
-        #     pag.click()
-        # else:
-        #     pag.moveTo(1000,680)
-        #     pag.click()
-        # if self.f3Box.isChecked() == False:
-        #     pag.moveTo(1000,700)
-        #     pag.click()
-        #     pag.moveTo(1000,750)
-        #     pag.click()
-
-        # pag.moveTo(1000,750)
-        # pag.click()
-
-        # if Mods == "Vanilla":
-        #     pag.click()
-        # elif Mods == "Optifine":
-        #     pag.moveTo(1000,800)
-        #     pag.click()
-        # elif Mods == "CaffeineMC":
-        #     pag.moveTo(1000,820)
-        #     pag.click()
-
-        # pag.scroll(-1000)
-        # pag.moveTo(1000,490)
-        # pag.click()
-        # pag.typewrite(ytlink)
-        # pag.moveTo(1000,600)
-        # pag.click()
-        # pag.typewrite(desc)
 
 
 
