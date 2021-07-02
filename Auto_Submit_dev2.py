@@ -239,15 +239,16 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         ytlink = self.ytLink.text()
         seed = self.sText.text()
         desc = self.descriptionText.toPlainText()
-
-        webbrowser.open("https://www.speedrun.com/mc")
         QtTest.QTest.qWait(1000)
+        chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe --start-maximized %s'
+        webbrowser.get(chrome_path).open_new('https://www.speedrun.com/mc')
+        QtTest.QTest.qWait(3000)
         submit = pag.locateCenterOnScreen(resource_path('submit.png'), confidence=0.7)
         while submit == None:
             QtTest.QTest.qWait(1000)
             submit = pag.locateCenterOnScreen(resource_path('submit.png'), confidence=0.7)
         pag.click(submit)
-        QtTest.QTest.qWait(500)
+        QtTest.QTest.qWait(3000)
         rtm = pag.locateCenterOnScreen(resource_path('RT.png'), confidence=0.7)
         while rtm == None:
             QtTest.QTest.qWait(1000)
@@ -327,15 +328,19 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             macrovar = pag.locateCenterOnScreen(resource_path('caffeine.png'), confidence=0.7)
             pag.click(macrovar)
 
-        pag.scroll(-300)
+        pag.scroll(-400)
         QtTest.QTest.qWait(500)
         macrovar = pag.locateCenterOnScreen(resource_path('video.png'), confidence=0.7)
         pag.click(macrovar)
         pag.typewrite(ytlink)
         macrovar = pag.locateCenterOnScreen(resource_path('desc.png'), confidence=0.7)
+        while macrovar == None:
+            QtTest.QTest.qWait(500)
+            macrovar = pag.locateCenterOnScreen(resource_path('desc.png'), confidence=0.7)
         pag.click(macrovar)
         pag.typewrite(seed+"\n")
         pag.typewrite(desc)
+
 
         
         

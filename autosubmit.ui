@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MCAutoSubmit v0.8</string>
+   <string>MCAutoSubmit v0.81</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="f3Button">
