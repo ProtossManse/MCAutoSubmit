@@ -8,6 +8,8 @@ from nbt.nbt import NBTFile
 import getpass
 import datetime
 import webbrowser
+import requests
+import json
 
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -15,9 +17,14 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5 import QtTest
 
+
+
+
+
 username = getpass.getuser()
 path = os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")
 
+WOWSANS = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MCAutoSubmit")
 
 
 
@@ -41,7 +48,6 @@ Ui_MainWindow = uic.loadUiType(macUI)[0]
 
 
 
-
     
  
 class MainDialog(QMainWindow, Ui_MainWindow):
@@ -49,24 +55,48 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.setWindowIcon(QIcon(ico))
-
         self.seedButton.clicked.connect(self.seedClicked)
         self.resetButton.clicked.connect(self.auto)
         self.startButton.clicked.connect(self.macro1)
         self.pathButton.clicked.connect(self.browse)
+        self.linkButton.clicked.connect(self.test)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
-        self.pathLine.setText(path)
+        self.pathLine.setText(WOWSANS.value("path", path))
+        self.apiLine.setText(WOWSANS.value("api"))
         self.auto_stop = False
+        self.onlyInt = QIntValidator()
+        self.igtHr.setValidator(self.onlyInt)
+        self.igtMin.setValidator(self.onlyInt)
+        self.igtSec.setValidator(self.onlyInt)
+        self.igtPoint.setValidator(self.onlyInt)
+        self.rtaHr.setValidator(self.onlyInt)
+        self.rtMin.setValidator(self.onlyInt)
+        self.rtSec.setValidator(self.onlyInt)
+        self.rtPoint.setValidator(self.onlyInt)
         self.langBox.currentIndexChanged.connect(self.lang)
         self.creditLabel.mousePressEvent = self.credit
+        self.apiLabel.mousePressEvent = self.link
         self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
+
+        if WOWSANS.value("lang") == "한국어":
+            self.langBox.setCurrentText("한국어")
+        else:
+            self.langBox.setCurrentText("English")
+
+        
+
+
+
 
     def credit(self, event):
         QMessageBox.information(self, "Credits", "MCAutoSubmit by ProtossManse with Haru.\n\nIcon by ChobojaX.")
         
 
     def seedClicked(self):
-        seed, ok1 = QInputDialog.getText(self, "Change Seed", "<font face=\"Malgun Gothic\">Seed:</font>")
+        if self.langBox.currentText() == "한국어":
+            seed, ok1 = QInputDialog.getText(self, "시드 변경", "<font face=\"Malgun Gothic\">시드:</font>")
+        else:
+            seed, ok1 = QInputDialog.getText(self, "Change Seed", "<font face=\"Malgun Gothic\">Seed:</font>")
 
         if ok1 == True:
             if seed != "":
@@ -84,29 +114,37 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         global path
         pathops = QFileDialog.Options()
         pathops |= QFileDialog.ShowDirsOnly
-        path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', path)
-        if path != "":
+        patht = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', path)
+        if patht != "":
+            path = patht.replace("/", "\\")
             self.pathLine.setText(str(path))
+            WOWSANS.setValue("path", str(path))
+
 
     def lang(self):
         
         if self.langBox.currentText() == "한국어":
+            WOWSANS.setValue("lang", "한국어")
             self.seedButton.setText("시드 변경")
             self.label_2.setText("Real Time (수동):")
             self.label_7.setText("버전:")
             self.label_8.setText("난이도:")
             self.label_9.setText("모드:")
+            self.creditLabel.setText("크레딧")
             self.label_13.setText("시드 타입:")
             self.label_10.setText("경로:")
+            self.apiLabel.setText("<html><head/><body><p><span style=\" color:#0000ff;\">API 키 (URL):</span></p></body></html>")
             self.pathButton.setText("찾기...")
             self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#ff0000;\">1.16.1 전용</span></p></body></html>")
             self.startButton.setText("제출")
             self.resetButton.setText("새로고침\n(Esc)")
+            self.linkButton.setText("테스트...")
             if self.ytLink.text() == "Video Link(Manual)":
                 self.ytLink.setText("동영상 링크 (수동)")
-            if self.descriptionText.toPlainText() == "Description (Manual)\nDo not enter the seed.":
+            if self.descriptionText.toPlainText() == "Description (Manual)\nDon't enter the seed.":
                 self.descriptionText.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">설명 (수동)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">시드를 입력하지 마세요.</p></body></html>")
         elif self.langBox.currentText() == "English":
+            WOWSANS.setValue("lang", "english")
             self.seedButton.setText("Change Seed")
             self.label_2.setText("Real Time(Manual):")
             self.label_7.setText("Version:")
@@ -114,14 +152,17 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.label_9.setText("Mods:")
             self.label_13.setText("Seed Type:")
             self.label_10.setText("Path:")
+            self.apiLabel.setText("<html><head/><body><p><span style=\" color:#0000ff;\">API Key (URL):</span></p></body></html>")
+            self.creditLabel.setText("Credits")
             self.pathButton.setText("Browse...")
+            self.linkButton.setText("Test...")
             self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#ff0000;\">Only 1.16.1</span></p></body></html>")
             self.startButton.setText("Submit")
             self.resetButton.setText("Refresh\n(Esc)")
             if self.ytLink.text() == "동영상 링크 (수동)":
                 self.ytLink.setText("Video Link(Manual)")
-            if self.textEdit.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요.":
-                self.textEdit.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>")
+            if self.descriptionText.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요.":
+                self.descriptionText.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>")
             
 
 
@@ -148,6 +189,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             mc_igt = int(mc_igt) - 1
             mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
             mc_moded = str(dat["Data"]["WasModded"])
+            global mc_sec
             mc_sec = int(mc_igt) / 20
             mc_isend = str(dat["Data"]["Player"]["seenCredits"])
             if mc_version == "1.16.1":
@@ -200,7 +242,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
                 
 
-            print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{str(hr)}hour {str(min)} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\nCtime: {str(ctime)}\n{mc_isend}")
+            print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{str(hr)}hour {str(min)} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\nCtime: {str(ctime)}\n{mc_isend}\n{mc_sec}\n")
             if mc_diffi == "Easy":
                 self.diffiBox.setCurrentText("Easy")
             elif mc_diffi == "Normal":
@@ -217,6 +259,30 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         except:
             QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
 
+    def link(self, event):
+        webbrowser.open('https://www.speedrun.com/api/auth')
+
+    def test(self):
+        WOWSANS.setValue("api", self.apiLine.text())
+        self.linkButton.setDisabled(True)
+        QtTest.QTest.qWait(300)
+        api_key = self.apiLine.text()
+        res = requests.get('https://www.speedrun.com/api/v1/profile', headers={'X-API-Key': api_key})
+        print(res.json())
+        QtTest.QTest.qWait(300)
+        if str(res) == "<Response [403]>":
+            QMessageBox.warning(self, "ERROR", "No User Found", QMessageBox.Ok)
+        elif str(res) == "<Response [200]>":
+            srcuser = res.json()["data"]["names"]["international"]
+            self.userid = res.json()["data"]["id"]
+            QMessageBox.information(self, "Success", f"Found User. Hello {srcuser} (id: {self.userid}).")
+        self.linkButton.setEnabled(True)
+
+    
+        
+
+
+
         
 
 
@@ -225,121 +291,72 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
     def macro1(self):
 
-        rtHour = self.rtaHr.text()
-        rtMin = self.rtMin.text()
-        rtSec = self.rtSec.text()
-        rtPoint = self.rtPoint.text()
-        igtHr = self.igtHr.text()
-        igtMin = self.igtMin.text()
-        igtSec = self.igtSec.text()
-        igtPoint = self.igtPoint.text()
+        rtHour = int(self.rtaHr.text())
+        rtMin = int(self.rtMin.text())
+        rtSec = int(self.rtSec.text())
+        rtPoint = float(self.rtPoint.text())
+        # igtHr = self.igtHr.text()
+        # igtMin = self.igtMin.text()
+        # igtSec = self.igtSec.text()
+        # igtPoint = self.igtPoint.text()
+        global mc_sec
         seedType = self.seedType.currentText()
+        if seedType == "SSG":
+            seedType = "klrzpjo1"
+        elif seedType == "RSG":
+            seedType = "21d4zvp1"
         mods = self.Mods.currentText()
+        if mods == "Vanilla":
+            modsapi = "21gyvwm1"
+        elif mods == "CaffeineMC":
+            modsapi = "jq6kxd3l"
         diffi = self.diffiBox.currentText()
+        if diffi == "Easy":
+            diffiid = "4lxg24q2"
+        elif diffi == "Normal":
+            diffiid = "8149mvqd"
+        elif diffi == "Hard":
+            diffiid = "z19xe814"
+        elif diffi == "Hardcore":
+            diffiid = "p129j4lx"
+        
+        if self.f3Box.isChecked() == True:
+            f3 = "rqvmvz6q"
+        else:
+            f3 = "5lee2vkl"
+
+
         ytlink = self.ytLink.text()
         seed = self.sText.text()
         desc = self.descriptionText.toPlainText()
-        QtTest.QTest.qWait(1000)
-        chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe --start-maximized %s'
-        webbrowser.get(chrome_path).open_new('https://www.speedrun.com/mc')
-        QtTest.QTest.qWait(3000)
-        submit = pag.locateCenterOnScreen(resource_path('submit.png'), confidence=0.7)
-        while submit == None:
-            QtTest.QTest.qWait(1000)
-            submit = pag.locateCenterOnScreen(resource_path('submit.png'), confidence=0.7)
-        pag.click(submit)
-        QtTest.QTest.qWait(3000)
-        rtm = pag.locateCenterOnScreen(resource_path('RT.png'), confidence=0.7)
-        while rtm == None:
-            QtTest.QTest.qWait(1000)
-            rtm = pag.locateCenterOnScreen(resource_path('RT.png'), confidence=0.7)
-        if rtm != None:
-            pag.moveTo(rtm)
-            pag.moveRel(80, 0)
-            pag.click()
-            pag.typewrite(rtHour)
-            pag.moveRel(80, 0)
-            pag.click()
-            pag.typewrite(rtMin)
-            pag.moveRel(80, 0)
-            pag.click()
-            pag.typewrite(rtSec)
-            pag.moveRel(80, 0)
-            pag.click()
-            pag.typewrite(rtPoint)
-        igtm = pag.locateCenterOnScreen(resource_path('IGT.png'), confidence=0.7)
-        if igtm != None:
-            pag.moveTo(igtm)
-            pag.moveRel(80, 0)
-            pag.click()
-            pag.typewrite(igtHr)
-            pag.moveRel(80, 0)
-            pag.click()
-            pag.typewrite(igtMin)
-            pag.moveRel(80, 0)
-            pag.click()
-            pag.typewrite(igtSec)
-            pag.moveRel(80, 0)
-            pag.click()
-            pag.typewrite(igtPoint)
-        macrovar = pag.locateCenterOnScreen(resource_path('version.png'), confidence=0.7)
-        if macrovar != None:
-            pag.moveTo(macrovar)
-            pag.moveRel(300,0)
-            pag.click()
-        macrovar = pag.locateCenterOnScreen(resource_path('1_16_1.png'), confidence=0.7)
-        if macrovar != None:
-            pag.click(macrovar)
-        macrovar = pag.locateCenterOnScreen(resource_path('difficulty.png'), confidence=0.7)
-        if macrovar != None:
-            pag.moveTo(macrovar)
-            pag.moveRel(280, 0)
-            pag.click()
-        if diffi == "Easy":
-            diffimac = pag.locateCenterOnScreen(resource_path('easy.png'),confidence=0.7)
-            pag.click(diffimac)
-        elif diffi == "Normal":
-            diffimac = pag.locateCenterOnScreen(resource_path('normal.png'),confidence=0.7)
-            pag.click(diffimac)
-        elif diffi == "Hard":
-            diffimac = pag.locateCenterOnScreen(resource_path('hard.png'),confidence=0.7)
-            pag.click(diffimac)
-        elif diffi == "Hardcore":
-            diffimac = pag.locateCenterOnScreen(resource_path('normal.png'),confidence=0.7)
-            pag.click(diffimac)
+        data = {
+    "run": {
+    "category": "mkeyl926",
+    "date": datetime.datetime.today().strftime("%Y-%m-%d"),
+    "platform": "8gej2n93",
+    "verified": str(False),
+    "times": {
+      "realtime": str(rtHour*3600 + rtMin*60 + rtSec + rtPoint/1000),
+      "ingame": str(mc_sec)
+    },
+    "players": [
+      {"rel": "user", "id": self.userid},
+    ],
+    "emulated": str(False),
+    "video": f"{ytlink}",
+    "comment": f"{seed}\n{desc}",
+    "values": {
+        "jlzkwql2": "mln68v0q",
+        "9l737pn1": f"{diffiid}",
+        "r8rg67rn": f"{seedType}",
+        "wl33kewl": "4qye4731",
+        "ql6g2ow8": f"{f3}",
+        "dloymqd8": f"{modsapi}"
 
-        if seedType == "SSG":
-            macrovar = pag.locateCenterOnScreen(resource_path('seed_type.png'), confidence=0.7)
-            if macrovar != None:
-                pag.moveTo(macrovar)
-                pag.moveRel(280,0)
-                pag.click()
-                macrovar = pag.locateCenterOnScreen(resource_path('ssg.png'), confidence=0.7)
-                pag.click(macrovar)
-        if self.f3Box.isChecked() == False:
-            macrovar = pag.locateCenterOnScreen(resource_path('f3_1.png'), confidence=0.7)
-            pag.click(macrovar)
-            macrovar = pag.locateCenterOnScreen(resource_path('f3_2.png'), confidence=0.7)
-            pag.click(macrovar)
-
-        if mods == "CaffeineMC":
-            macrovar = pag.locateCenterOnScreen(resource_path('mods.png'), confidence=0.7)
-            pag.click(macrovar)
-            macrovar = pag.locateCenterOnScreen(resource_path('caffeine.png'), confidence=0.7)
-            pag.click(macrovar)
-
-        pag.scroll(-400)
-        QtTest.QTest.qWait(500)
-        macrovar = pag.locateCenterOnScreen(resource_path('video.png'), confidence=0.7)
-        pag.click(macrovar)
-        pag.typewrite(ytlink)
-        macrovar = pag.locateCenterOnScreen(resource_path('desc.png'), confidence=0.7)
-        while macrovar == None:
-            QtTest.QTest.qWait(500)
-            macrovar = pag.locateCenterOnScreen(resource_path('desc.png'), confidence=0.7)
-        pag.click(macrovar)
-        pag.typewrite(seed+"\n")
-        pag.typewrite(desc)
+    }
+  }
+}
+        requests.post('https://www.speedrun.com/api/v1/runs', data=data)
 
 
         
