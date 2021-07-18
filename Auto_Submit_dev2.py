@@ -269,7 +269,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         QtTest.QTest.qWait(300)
         api_key = self.apiLine.text()
         res = requests.get('https://www.speedrun.com/api/v1/profile', headers={'X-API-Key': api_key})
-        # print(res.json)
+        print(res.json())
         QtTest.QTest.qWait(300)
         if str(res) == "<Response [403]>":
             QMessageBox.warning(self, "ERROR", "No User Found", QMessageBox.Ok)
@@ -341,7 +341,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
             else:
                 
-                data = {
+                datas = {
                 "category": "mkeyl926",
                 "date": datetime.datetime.today().strftime("%Y-%m-%d"),
                 "platform": "8gej2n93",
@@ -351,9 +351,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 "realtime_noloads": 0,
                 "ingame": float(mc_sec)
                 },
-                "players": [
-                {"rel": "user", "id": "8qrllpwj"}
-                ],
                 "emulated": False,
                 "video": ytlink,
                 "comment": f"{seed}\r\n{desc}\r\n",
@@ -384,6 +381,44 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 }
                 }
             }
+
+
+
+
+
+                self.startButton.setDisabled(True)
+                QtTest.QTest.qWait(300)
+                r = requests.post('https://www.speedrun.com/api/v1/runs', json={'run': datas}, headers={'X-API-Key': api_key})
+                print(r.json())
+                QtTest.QTest.qWait(300)
+                if r.status_code == 400:
+                    try:
+                        QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
+                    except:
+                        QMessageBox.warning(self, "ERROR", "Unknown ERROR")
+
+                elif r.status_code == 201:
+                    QMessageBox.information(self,"Submit Run", "Submit Finished.")
+                
+                self.startButton.setEnabled(True)
+
+        except NameError:
+            QMessageBox.warning(self, "ERROR", "Press \'Test\' Button!")
+
+
+        
+        
+
+
+
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    main_dialog = MainDialog()
+    main_dialog.show()
+    app.exec_()
+
 
                 # {
                 # "run": [{
@@ -424,36 +459,3 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 #         },
                 #     }],
                 # }
-
-
-
-                self.startButton.setDisabled(True)
-                QtTest.QTest.qWait(300)
-                r = requests.post('https://www.speedrun.com/api/v1/runs',headers={'X-API-Key': api_key}, data=json.dumps({'run': data}))
-                print(r.url)
-                if r.status_code == 400:
-                    try:
-                        QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
-                    except:
-                        QMessageBox.warning(self, "ERROR", "Unknown ERROR")
-                QtTest.QTest.qWait(300)
-                self.startButton.setEnabled(True)
-
-        except NameError:
-            QMessageBox.warning(self, "ERROR", "Press \'Test\' Button!")
-
-
-        
-        
-
-
-
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    main_dialog = MainDialog()
-    main_dialog.show()
-    app.exec_()
-
-
