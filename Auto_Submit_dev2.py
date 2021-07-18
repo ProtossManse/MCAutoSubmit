@@ -1,6 +1,4 @@
 from PyQt5 import QtWidgets
-from numpy import concatenate
-import pyautogui as pag
 import sys
 import os
 import keyboard
@@ -63,6 +61,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.pathLine.setText(WOWSANS.value("path", path))
         self.apiLine.setText(WOWSANS.value("api"))
+        self.descriptionText.setText(WOWSANS.value("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>"))
+        self.seedType.setCurrentText(WOWSANS.value("seedType", "RSG"))
         self.auto_stop = False
         self.onlyInt = QIntValidator()
         self.igtHr.setValidator(self.onlyInt)
@@ -77,11 +77,12 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.creditLabel.mousePressEvent = self.credit
         self.apiLabel.mousePressEvent = self.link
         self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
+        self.auto()
+        
+        
 
         if WOWSANS.value("lang") == "한국어":
             self.langBox.setCurrentText("한국어")
-        else:
-            self.langBox.setCurrentText("English")
 
         
 
@@ -242,7 +243,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
                 
 
-            print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{str(hr)}hour {str(min)} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\nCtime: {str(ctime)}\n{mc_isend}\n{mc_sec}\n")
+            # print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{hr} hour {min} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\nCtime: {str(ctime)}\n{mc_isend}\n{mc_sec}\n")
             if mc_diffi == "Easy":
                 self.diffiBox.setCurrentText("Easy")
             elif mc_diffi == "Normal":
@@ -268,14 +269,15 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         QtTest.QTest.qWait(300)
         api_key = self.apiLine.text()
         res = requests.get('https://www.speedrun.com/api/v1/profile', headers={'X-API-Key': api_key})
-        print(res.json())
+        # print(res.json)
         QtTest.QTest.qWait(300)
         if str(res) == "<Response [403]>":
             QMessageBox.warning(self, "ERROR", "No User Found", QMessageBox.Ok)
         elif str(res) == "<Response [200]>":
             srcuser = res.json()["data"]["names"]["international"]
-            self.userid = res.json()["data"]["id"]
-            QMessageBox.information(self, "Success", f"Found User. Hello {srcuser} (id: {self.userid}).")
+            global userid
+            userid = res.json()["data"]["id"]
+            QMessageBox.information(self, "Success", f"Found User. Hello {srcuser}. (id: {userid})")
         self.linkButton.setEnabled(True)
 
     
@@ -290,21 +292,20 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
     def macro1(self):
-
         rtHour = int(self.rtaHr.text())
         rtMin = int(self.rtMin.text())
         rtSec = int(self.rtSec.text())
         rtPoint = float(self.rtPoint.text())
+        api_key = self.apiLine.text()
         # igtHr = self.igtHr.text()
         # igtMin = self.igtMin.text()
         # igtSec = self.igtSec.text()
         # igtPoint = self.igtPoint.text()
-        global mc_sec
         seedType = self.seedType.currentText()
         if seedType == "SSG":
-            seedType = "klrzpjo1"
+            seedTypeKey = "klrzpjo1"
         elif seedType == "RSG":
-            seedType = "21d4zvp1"
+            seedTypeKey = "21d4zvp1"
         mods = self.Mods.currentText()
         if mods == "Vanilla":
             modsapi = "21gyvwm1"
@@ -329,34 +330,117 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         ytlink = self.ytLink.text()
         seed = self.sText.text()
         desc = self.descriptionText.toPlainText()
-        data = {
-    "run": {
-    "category": "mkeyl926",
-    "date": datetime.datetime.today().strftime("%Y-%m-%d"),
-    "platform": "8gej2n93",
-    "verified": str(False),
-    "times": {
-      "realtime": str(rtHour*3600 + rtMin*60 + rtSec + rtPoint/1000),
-      "ingame": str(mc_sec)
-    },
-    "players": [
-      {"rel": "user", "id": self.userid},
-    ],
-    "emulated": str(False),
-    "video": f"{ytlink}",
-    "comment": f"{seed}\n{desc}",
-    "values": {
-        "jlzkwql2": "mln68v0q",
-        "9l737pn1": f"{diffiid}",
-        "r8rg67rn": f"{seedType}",
-        "wl33kewl": "4qye4731",
-        "ql6g2ow8": f"{f3}",
-        "dloymqd8": f"{modsapi}"
+        WOWSANS.setValue("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"+desc+"</p></body></html>")
+        WOWSANS.setValue("seedType", seedType)
+        try:
 
-    }
-  }
-}
-        requests.post('https://www.speedrun.com/api/v1/runs', data=data)
+            
+
+            if rtHour == 00 and rtMin == 00 and rtSec == 00 and rtPoint == 000:
+                QMessageBox.warning(self, "ERROR", "You didn't enter RT(Real Time)!")
+
+            else:
+                
+                data = {
+                "category": "mkeyl926",
+                "date": datetime.datetime.today().strftime("%Y-%m-%d"),
+                "platform": "8gej2n93",
+                "verified": False,
+                "times": {
+                "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
+                "realtime_noloads": 0,
+                "ingame": float(mc_sec)
+                },
+                "players": [
+                {"rel": "user", "id": "8qrllpwj"}
+                ],
+                "emulated": False,
+                "video": ytlink,
+                "comment": f"{seed}\r\n{desc}\r\n",
+                "variables": {
+                "jlzkwql2": {
+                    "type": "pre-defined",
+                    "value": "mln68v0q"
+                },
+                "9l737pn1": {
+                    "type": "pre-defined",
+                    "value": diffiid
+                },
+                "r8rg67rn": {
+                    "type": "pre-defined",
+                    "value": seedTypeKey
+                },
+                "wl33kewl": {
+                    "type": "pre-defined",
+                    "value": "4qye4731"
+                },
+                "ql6g2ow8": {
+                    "type": "pre-defined",
+                    "value": f3
+                },
+                "dloymqd8": {
+                    "type": "pre-defined",
+                    "value": modsapi
+                }
+                }
+            }
+
+                # {
+                # "run": [{
+                # "game": "j1npme6p",
+                # "level": None,
+                # "category": "mkeyl926",
+                # "verified": False,
+                # "videos": {
+                #     "links": [{
+                #         "uri": f"{ytlink}"
+                #     }]
+                # },
+                # "comment": f"{seed}\r\n{desc}\r\n",
+                # "players": [{
+                #     "rel": "user",
+                #     "id": f"{userid}",
+                #     "uri": f"https://www.speedrun.com/api/v1/users/{userid}"
+                # }],
+                # "date": datetime.datetime.today().strftime("%Y-%m-%d"),
+                # "times": {
+                #     "realtime_t": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
+                #     "realtime_noloads_t": 0,
+                #     "ingame_t": float(mc_sec),
+                # },
+                # "system": {
+                #     "platform": "8gej2n93",
+                #     "emulated": False,
+                #     "region": None,
+                # },
+                # "splits": None,
+                # "values": {
+                #     "jlzkwql2": "mln68v0q",
+                #     "9l737pn1": f"{diffiid}",
+                #     "r8rg67rn": f"{seedType}",
+                #     "wl33kewl": "4qye4731",
+                #     "ql6g2ow8": f"{f3}",
+                #     "dloymqd8": f"{modsapi}"
+                #         },
+                #     }],
+                # }
+
+
+
+                self.startButton.setDisabled(True)
+                QtTest.QTest.qWait(300)
+                r = requests.post('https://www.speedrun.com/api/v1/runs',headers={'X-API-Key': api_key}, data=json.dumps({'run': data}))
+                print(r.url)
+                if r.status_code == 400:
+                    try:
+                        QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
+                    except:
+                        QMessageBox.warning(self, "ERROR", "Unknown ERROR")
+                QtTest.QTest.qWait(300)
+                self.startButton.setEnabled(True)
+
+        except NameError:
+            QMessageBox.warning(self, "ERROR", "Press \'Test\' Button!")
 
 
         
