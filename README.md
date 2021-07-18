@@ -2,17 +2,11 @@
 
 the Minecraft: Java Edition speedrun.com Auto Submit Program.
 
-Alpha Version.
+Minecraft: Java Edition 1.16.1 Only, Windows Only
 
-Many Bugs, Incomplete Program.
+마인크래프트 자바 에디션 스피드런 자동 등록기입니다.
 
-Only 1.16.1 Support
-
-마인크래프트 자바 에디션 스피드런 자동(매크로) 등록기입니다.
-
-알파버전(미완성)입니다.
-
-1.16.1 전용
+마인크래프트 자바 에디션 1.16.1만 지원합니다. 아직은 윈도우 전용입니다.
 
 MCAutoSubmit by ProtossManse with Haru
 
