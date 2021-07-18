@@ -243,7 +243,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
                 
 
-            # print(f"\n{str(mc_version)}\n{str(mc_diffi)}\n{mc_igt} ticks\n{hr} hour {min} min {sec} secs {ms} ms\nSeed: {mc_seed}\nModded: {mc_moded}\nCtime: {str(ctime)}\n{mc_isend}\n{mc_sec}\n")
             if mc_diffi == "Easy":
                 self.diffiBox.setCurrentText("Easy")
             elif mc_diffi == "Normal":
@@ -269,7 +268,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         QtTest.QTest.qWait(300)
         api_key = self.apiLine.text()
         res = requests.get('https://www.speedrun.com/api/v1/profile', headers={'X-API-Key': api_key})
-        print(res.json())
         QtTest.QTest.qWait(300)
         if str(res) == "<Response [403]>":
             QMessageBox.warning(self, "ERROR", "No User Found", QMessageBox.Ok)
@@ -389,7 +387,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 self.startButton.setDisabled(True)
                 QtTest.QTest.qWait(300)
                 r = requests.post('https://www.speedrun.com/api/v1/runs', json={'run': datas}, headers={'X-API-Key': api_key})
-                print(r.json())
                 QtTest.QTest.qWait(300)
                 if r.status_code == 400:
                     try:
