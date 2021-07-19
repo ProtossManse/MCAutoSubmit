@@ -1,6 +1,6 @@
 '''
 MCAutoSubmit
-Copyright © 2021 ProtossManse (Discord: 플토만세#3053)
+Copyright © 2021 by ProtossManse (Discord: 플토만세#3053)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
-
 
 from PyQt5 import QtWidgets
 import sys
@@ -34,15 +33,9 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5 import QtTest
 
-
-
-
-
 username = getpass.getuser()
 path = os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")
 WOWSANS = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MCAutoSubmit")
-
-
 
 def resource_path(relative_path):
     try:
@@ -61,10 +54,6 @@ macUI = str(macUI)
 ico = resource_path("MCAutoSubmit.png")
 
 Ui_MainWindow = uic.loadUiType(macUI)[0]
-
-
-
-    
  
 class MainDialog(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -96,22 +85,12 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.mousePressEvent = self.link
         self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
         self.auto()
-        
-        
 
         if WOWSANS.value("lang") == "한국어":
             self.langBox.setCurrentText("한국어")
 
-
-        
-
-        
-
-
-
-
     def credit(self, event):
-        QMessageBox.information(self, "Credits", "MCAutoSubmit v0.9 by ProtossManse with Haru.\n\nIcon by ChobojaX.")
+        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord 플토만세#3053)\n\nMCAutoSubmit v1.0.0 by ProtossManse with Haru.\n\nIcon by ChobojaX.\n\nMCAutoSubmit is distributed under the GNU General Public License v3.0.")
         
 
     def seedClicked(self):
@@ -161,7 +140,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.label_10.setText("경로:")
             self.apiLabel.setText("<html><head/><body><p><span style=\" color:#0000ff;\">API 키 (URL):</span></p></body></html>")
             self.pathButton.setText("검색...")
-            self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#ff0000;\">1.16.1 전용</span></p></body></html>")
             self.startButton.setText("제출")
             self.resetButton.setText("새로고침\n(Esc)")
             self.linkButton.setText("테스트...")
@@ -183,7 +161,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.creditLabel.setText("Credits")
             self.pathButton.setText("Browse...")
             self.linkButton.setText("Test...")
-            self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#ff0000;\">Only 1.16.1</span></p></body></html>")
             self.startButton.setText("Submit")
             self.resetButton.setText("Refresh\n(Esc)")
             if self.ytLink.text() == "동영상 링크 (수동)":
@@ -194,12 +171,13 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
     def auto(self):
-        try:
-            mc_dir = path
-            mc_saves = os.path.join(mc_dir, "saves")
+        
+        mc_dir = path
+        mc_world = os.path.join(mc_dir, "saves")
 
-            wrm = sorted([os.path.join(mc_saves, s) for s in os.listdir(mc_saves)], key=os.path.getmtime, reverse=True)
-            for w in wrm.copy()[:3]:
+        wrm = sorted([os.path.join(mc_world, s) for s in os.listdir(mc_world)], key=os.path.getmtime, reverse=True)
+        for w in wrm.copy()[:3]:
+            try:
                 world = w
                 dat = NBTFile(os.path.join(world, "level.dat"))
                 ctime = os.path.getctime(world)
@@ -208,85 +186,132 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     continue
                 else:
                     break
-            
-            mc_version = str(dat["Data"]["Version"]["Name"])
-            mc_diffi = str(dat["Data"]["Difficulty"])
-            mc_hardcore = str(dat["Data"]["hardcore"])
-            mc_igt = str(dat["Data"]["Time"])
-            mc_igt = int(mc_igt) - 1
-            mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
-            mc_moded = str(dat["Data"]["WasModded"])
-            global mc_sec
-            mc_sec = int(mc_igt) / 20
+            except:
+                continue
+
+        try:            
             mc_isend = str(dat["Data"]["Player"]["seenCredits"])
-            if mc_version == "1.16.1":
-                self.version.setCurrentText("1.16.1")
-            else:
-                self.version.setCurrentText("Other")
-            
-
-            dot = str(mc_sec)
-            dot = dot.index(".")
-            intsec = str(mc_sec)[:int(dot)]
-            min = int(intsec) // 60
-            hr = min // 60
-            sec = int(intsec) % 60
-            min = min % 60
-            ms = str(mc_sec)[int(dot) + 1:]
-            if len(ms) == 2:
-                ms = ms + "0"
-            elif len(ms) == 1:
-                ms = ms + "00"
-
-            self.sText.setText("Seed: " + mc_seed)
-            if mc_hardcore == "1":
-                mc_diffi = "Hardcore"
-            elif mc_hardcore == "0":
-                if mc_diffi == "1":
-                    mc_diffi = "Easy"
-                elif mc_diffi == "2":
-                    mc_diffi = "Normal"
-                elif mc_diffi == "3":
-                    mc_diffi = "Hard"
-            if mc_moded == "1":
-                mc_moded = True
-            elif mc_moded == "0":
-                mc_moded = False
-            
             if mc_isend == "0":
-                    self.igtHr.setText(str(hr))
-                    self.igtMin.setText(str(min))
-                    self.igtSec.setText(str(sec))
-                    self.igtPoint.setText(ms)
-                    self.auto_stop = False
-            elif mc_isend == "1":
-                if self.auto_stop == False:
-                    self.igtHr.setText(str(hr))
-                    self.igtMin.setText(str(min))
-                    self.igtSec.setText(str(sec))
-                    self.igtPoint.setText(ms)
-                    self.auto_stop = True
-
-                
-
-            if mc_diffi == "Easy":
-                self.diffiBox.setCurrentText("Easy")
-            elif mc_diffi == "Normal":
-                self.diffiBox.setCurrentText("Normal")
-            elif mc_diffi == "Hard":
-                self.diffiBox.setCurrentText("Hard")
-            elif mc_diffi == "Hardcore":
-                self.diffiBox.setCurrentText("Hardcore")
-
-            if mc_moded == True:
-                self.Mods.setCurrentText("CaffeineMC")
-            elif mc_moded == False:
-                self.Mods.setCurrentText("Vanilla")
-        except:
-            if self.langBox.currentText() == "한국어":
-                QMessageBox.warning(self, "오류", "월드를 감지할 수 없음", QMessageBox.Ok)
+                mc_isend = False
             else:
-                QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
+                mc_isend = True
+        except:
+            mc_isend = None
+        mc_igt = str(dat["Data"]["Time"])
+        mc_igt = int(mc_igt) - 1
+        try:
+            mc_version = str(dat["Data"]["Version"]["Name"])
+            if mc_version == "1.7.10":
+                minor = mc_version[:-3]
+            else:
+                minor = mc_version[:-2]
+                print(minor)
+            
+
+            if minor == "1.16" or minor == "1.17":
+                self.version.setCurrentText(mc_version)
+                mc_diffi = str(dat["Data"]["Difficulty"])
+                mc_hardcore = str(dat["Data"]["hardcore"])
+                mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
+                mc_moded = str(dat["Data"]["WasModded"])
+            elif minor == "1.15":
+                self.version.setCurrentText(mc_version)
+                mc_diffi = str(dat["Data"]["Difficulty"])
+                mc_hardcore = str(dat["Data"]["hardcore"])
+                mc_seed = str(dat["Data"]["RandomSeed"])
+                mc_moded = str(dat["Data"]["WasModded"])
+            elif minor == "1.14":
+                self.version.setCurrentText(mc_version)
+                mc_diffi = str(dat["Data"]["Difficulty"])
+                mc_hardcore = str(dat["Data"]["hardcore"])
+                mc_seed = str(dat["Data"]["RandomSeed"])
+                mc_moded = None                
+        except: 
+            try: # 1.8
+                self.version.setCurrentText("Unknown")
+                mc_diffi = str(dat["Data"]["Difficulty"])
+                mc_hardcore = str(dat["Data"]["hardcore"])
+                mc_seed = str(dat["Data"]["RandomSeed"])
+                mc_moded = None
+            except: #pre 1.8
+                self.version.setCurrentText("Unknown")
+                mc_diffi = None
+                mc_hardcore = str(dat["Data"]["hardcore"])
+                mc_seed = str(dat["Data"]["RandomSeed"])
+                mc_moded = None
+
+            
+
+        global mc_sec
+        mc_sec = int(mc_igt) / 20
+        
+
+        dot = str(mc_sec)
+        dot = dot.index(".")
+        intsec = str(mc_sec)[:int(dot)]
+        min = int(intsec) // 60
+        hr = min // 60
+        sec = int(intsec) % 60
+        min = min % 60
+        ms = str(mc_sec)[int(dot) + 1:]
+        if len(ms) == 2:
+            ms = ms + "0"
+        elif len(ms) == 1:
+            ms = ms + "00"
+
+        self.sText.setText("Seed: " + mc_seed)
+        if mc_hardcore == "1":
+            mc_diffi = "Hardcore"
+            self.diffiBox.setCurrentText("Hardcore")
+        elif mc_hardcore == "0":
+            if mc_diffi == "1":
+                mc_diffi = "Easy"
+                self.diffiBox.setCurrentText("Easy")
+            elif mc_diffi == "2":
+                mc_diffi = "Normal"
+                self.diffiBox.setCurrentText("Normal")
+            elif mc_diffi == "3":
+                mc_diffi = "Hard"
+                self.diffiBox.setCurrentText("Hard")
+            elif mc_diffi == None:
+                self.diffiBox.setCurrentText("Unknown")
+        if mc_moded == "1":
+            mc_moded = True
+        elif mc_moded == "0":
+            mc_moded = False
+        
+        if mc_isend == False or mc_isend == None:
+            self.igtHr.setText(str(hr))
+            self.igtMin.setText(str(min))
+            self.igtSec.setText(str(sec))
+            self.igtPoint.setText(str(ms))
+            self.auto_stop = False
+        elif mc_isend == True:
+            if self.auto_stop == False:
+                self.igtHr.setText(str(hr))
+                self.igtMin.setText(str(min))
+                self.igtSec.setText(str(sec))
+                self.igtPoint.setText(str(ms))
+                self.auto_stop = True
+
+            
+
+
+        if mc_moded == True:
+            if minor == "1.16":
+                self.Mods.setCurrentText("CaffeineMC")
+            else:
+                self.Mods.setCurrentText("Optifine")
+        elif mc_moded == False:
+            self.Mods.setCurrentText("Vanilla")
+        elif mc_moded == None:
+            self.Mods.setCurrentText("Unknown")
+        
+    
+        # if self.langBox.currentText() == "한국어":
+        #     QMessageBox.warning(self, "오류", "월드를 감지할 수 없음", QMessageBox.Ok)
+        # else:
+        #     QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
 
     def link(self, event):
         webbrowser.open('https://www.speedrun.com/api/auth')
@@ -330,11 +355,84 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         rtSec = int(self.rtSec.text())
         rtPoint = float(self.rtPoint.text())
         api_key = self.apiLine.text()
-        # igtHr = self.igtHr.text()
-        # igtMin = self.igtMin.text()
-        # igtSec = self.igtSec.text()
-        # igtPoint = self.igtPoint.text()
         seedType = self.seedType.currentText()
+        version = self.version.currentText()
+
+        vdict = {
+				"mln68v0q": "1.16.1",
+				"gq7rrnnl": "1.14.4",
+				"jq6vwj1m": "1.7.2",
+				"013xkx15": "1.7.10",
+				"4lx5gk41": "1.8.9",
+				"9qj2o314": "1.6.4",
+				"rqvx06l6": "1.0",
+				"5len0klo": "1.1",
+				"0q54m2lp": "1.2.1",
+				"4lxgk4q2": "1.2.2",
+				"81496vqd": "1.2.3",
+				"z19xv814": "1.2.4",
+				"p129k4lx": "1.2.5",
+				"81pez8l7": "1.3.1",
+				"xqko3k19": "1.3.2",
+				"gq72od1p": "1.4.2",
+				"21g968qz": "1.4.4",
+				"jqzgw8lp": "1.4.5",
+				"klrxdmlp": "1.4.6",
+				"21d6n5qe": "1.4.7",
+				"5q8433ld": "1.5.1",
+				"4qy7m2q7": "1.5.2",
+				"mlne7jlp": "1.6.1",
+				"8106y21v": "1.6.2",
+				"21d43441": "1.7.3",
+				"5lm2emqv": "1.7.4",
+				"81w72vq4": "1.7.5",
+				"814o96vq": "1.7.6",
+				"z192xv8q": "1.7.7",
+				"p12v9k4q": "1.7.8",
+				"zqojex1y": "1.7.9",
+				"rqvx26l6": "1.8",
+				"5lenyklo": "1.8.1",
+				"21dv7g1e": "1.8.2",
+				"5q8276qd": "1.8.3",
+				"5le86mlo": "1.8.4",
+				"01340kl5": "1.8.5",
+				"rqvz7516": "1.8.6",
+				"5levop1o": "1.8.7",
+				"gq7zyr1p": "1.8.8",
+				"81pyez81": "1.9",
+				"xqkeo3kq": "1.9.1",
+				"gq752od1": "1.9.2",
+				"21gn968l": "1.9.3",
+				"jqzngw8q": "1.9.4",
+				"klr3xdml": "1.10",
+				"5lmygj8l": "1.10.1",
+				"jq678gv1": "1.10.2",
+				"0q54o3nl": "1.11",
+				"zqo0rw5q": "1.11.1",
+				"4lxgvw4q": "1.11.2",
+				"xqkonxn1": "1.12",
+				"5q8270kq": "1.12.1",
+				"p12ongvl": "1.12.2",
+				"8142pg0l": "1.13",
+				"z19rz201": "1.13.1",
+				"z19ryv41": "1.13.2",
+				"9qj49koq": "1.14",
+				"01305er1": "1.14.1",
+				"814vn2v1": "1.14.2",
+				"jqzx69m1": "1.14.3",
+				"gq7zrdd1": "1.15",
+				"21dor7gq": "1.15.1",
+				"21go7k8q": "1.15.2",
+				"mln64j6q": "1.16",
+				"21d7zo31": "1.16.2",
+				"21d7evp1": "1.16.3",
+				"21dgwkj1": "1.16.4",
+				"21dzz0jl": "1.16.5",
+				"5q8ojzr1": "1.17",
+				"4qy93w3l": "1.17.1"
+			}
+        vdict = {v:k for k,v in vdict.items()}
+
         if seedType == "SSG":
             seedTypeKey = "klrzpjo1"
         elif seedType == "RSG":
@@ -344,6 +442,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             modsapi = "21gyvwm1"
         elif mods == "CaffeineMC":
             modsapi = "jq6kxd3l"
+        elif mods == "Optifine":
+            modsapi = "jqzk8rmq"
         diffi = self.diffiBox.currentText()
         if diffi == "Easy":
             diffiid = "4lxg24q2"
@@ -358,6 +458,18 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             f3 = "rqvmvz6q"
         else:
             f3 = "5lee2vkl"
+        
+        if version == "1.16.1":
+            versionKey = vdict[version]
+            versionRange = "4qye4731"
+        elif version == "1.15.2" or version == "1.14.4":
+            versionKey = vdict[version]
+            versionRange = "21go6e6q"
+        elif version == "1.7.10" or version == "1.8.9" or version == "1.7.4" or version == "1.7.2" or version == "1.6.4":
+            versionKey = vdict[version]
+            versionRange = "gq7zo9p1"
+
+
 
 
         ytlink = self.ytLink.text()
@@ -370,93 +482,95 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
         if rtHour == 00 and rtMin == 00 and rtSec == 00 and rtPoint == 000:
             if self.langBox.currentText() == "한국어":
-                QMessageBox.warning(self, "오류", "리얼타임을 입력하지 않음")
+                QMessageBox.warning(self, "오류", "리얼타임을 입력하지 않음.")
             else:
-                QMessageBox.warning(self, "ERROR", "You didn't enter RT(Real Time)!")
+                QMessageBox.warning(self, "ERROR", "Real Time isn't set")
 
         else:
             if self.descriptionText.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요." or self.descriptionText.toPlainText() == "Description (Manual)\nDon't enter the seed.":
                 if self.langBox.currentText() == "한국어":
                     QMessageBox.warning(self, "오류", "설명을 입력하지 않음. (공백 가능)")
                 else:
-                    QMessageBox.warning(self, "ERROR", "You didn't enter Description (Blank Available)")
+                    QMessageBox.warning(self, "ERROR", "Description isn't set. (Blank Available)")
             else:
-                datas = {
-                "category": "mkeyl926",
-                "date": datetime.datetime.today().strftime("%Y-%m-%d"),
-                "platform": "8gej2n93",
-                "verified": False,
-                "times": {
-                "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
-                "realtime_noloads": 0,
-                "ingame": float(mc_sec)
-                },
-                "emulated": False,
-                "video": ytlink,
-                "comment": f"{seed}\r\n{desc}\r\nSubmitted by MCAutoSubmit",
-                "variables": {
-                "jlzkwql2": {
-                    "type": "pre-defined",
-                    "value": "mln68v0q"
-                },
-                "9l737pn1": {
-                    "type": "pre-defined",
-                    "value": diffiid
-                },
-                "r8rg67rn": {
-                    "type": "pre-defined",
-                    "value": seedTypeKey
-                },
-                "wl33kewl": {
-                    "type": "pre-defined",
-                    "value": "4qye4731"
-                },
-                "ql6g2ow8": {
-                    "type": "pre-defined",
-                    "value": f3
-                },
-                "dloymqd8": {
-                    "type": "pre-defined",
-                    "value": modsapi
-                }
-                }
-                }
-
-
-
-
-
-                self.startButton.setDisabled(True)
-                QtTest.QTest.qWait(300)
-                r = requests.post('https://www.speedrun.com/api/v1/runs', json={'run': datas}, headers={'X-API-Key': api_key})
-                QtTest.QTest.qWait(300)
-                if r.status_code == 201:
+                if diffi == "Unknown" or mods == "Unknown" or version == "Unknown":
                     if self.langBox.currentText() == "한국어":
-                        QMessageBox.information(self,"MCAutoSubmit", "등록이 완료되었습니다. ")
+                        QMessageBox.warning(self, "오류", "난이도 혹은 모드 혹은 버전 정보를 입력하지 않음.")
                     else:
-                        QMessageBox.information(self,"MCAutoSubmit", "Submit Finished.")
+                        QMessageBox.warning(self, "ERROR", "Difficulty or Mods or Version isn't set.")
                 else:
-                    try:
-                        if self.langBox.currentText() == "한국어":
-                            QMessageBox.warning(self,"오류", str(r.json()['errors']))
-                        else:
-                            QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
-                    except:
-                        if self.langBox.currentText() == "한국어":
-                            QMessageBox.warning(self, "오류", "알 수 없는 오류")
-                        else:
-                            QMessageBox.warning(self, "ERROR", "Unknown ERROR")
+                    datas = {
+                    "category": "mkeyl926",
+                    "date": datetime.datetime.today().strftime("%Y-%m-%d"),
+                    "platform": "8gej2n93",
+                    "verified": False,
+                    "times": {
+                    "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
+                    "realtime_noloads": 0,
+                    "ingame": float(mc_sec)
+                    },
+                    "emulated": False,
+                    "video": ytlink,
+                    "comment": f"{seed}\r\n{desc}\r\nSubmitted by MCAutoSubmit",
+                    "variables": {
+                    "jlzkwql2": {
+                        "type": "pre-defined",
+                        "value": versionKey
+                    },
+                    "9l737pn1": {
+                        "type": "pre-defined",
+                        "value": diffiid
+                    },
+                    "r8rg67rn": {
+                        "type": "pre-defined",
+                        "value": seedTypeKey
+                    },
+                    "wl33kewl": {
+                        "type": "pre-defined",
+                        "value": versionRange
+                    },
+                    "ql6g2ow8": {
+                        "type": "pre-defined",
+                        "value": f3
+                    },
+                    "dloymqd8": {
+                        "type": "pre-defined",
+                        "value": modsapi
+                    }
+                    }
+                    }
 
-                
-                self.startButton.setEnabled(True)
+
+
+
+
+                    self.startButton.setDisabled(True)
+                    QtTest.QTest.qWait(300)
+                    r = requests.post('https://www.speedrun.com/api/v1/runs', json={'run': datas}, headers={'X-API-Key': api_key})
+                    QtTest.QTest.qWait(300)
+                    if r.status_code == 201:
+                        if self.langBox.currentText() == "한국어":
+                            QMessageBox.information(self,"MCAutoSubmit", "등록이 완료되었습니다. ")
+                        else:
+                            QMessageBox.information(self,"MCAutoSubmit", "Submit Finished.")
+                    else:
+                        try:
+                            if self.langBox.currentText() == "한국어":
+                                QMessageBox.warning(self,"오류", str(r.json()['errors']))
+                            else:
+                                QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
+                        except:
+                            if self.langBox.currentText() == "한국어":
+                                QMessageBox.warning(self, "오류", "알 수 없는 오류")
+                            else:
+                                QMessageBox.warning(self, "ERROR", "Unknown ERROR")
+
+                    
+                    self.startButton.setEnabled(True)
 
 
         
         
-
-
-
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
