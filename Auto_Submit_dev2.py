@@ -1,3 +1,22 @@
+'''
+MCAutoSubmit
+Copyright © 2021 ProtossManse (Discord: 플토만세#3053)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
+
 from PyQt5 import QtWidgets
 import sys
 import os
@@ -21,7 +40,6 @@ from PyQt5 import QtTest
 
 username = getpass.getuser()
 path = os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")
-
 WOWSANS = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MCAutoSubmit")
 
 
@@ -61,7 +79,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.pathLine.setText(WOWSANS.value("path", path))
         self.apiLine.setText(WOWSANS.value("api"))
-        self.descriptionText.setText(WOWSANS.value("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>"))
+        # self.descriptionText.setText(WOWSANS.value("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>"))
         self.seedType.setCurrentText(WOWSANS.value("seedType", "RSG"))
         self.auto_stop = False
         self.onlyInt = QIntValidator()
@@ -84,13 +102,16 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         if WOWSANS.value("lang") == "한국어":
             self.langBox.setCurrentText("한국어")
 
+
+        
+
         
 
 
 
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", "MCAutoSubmit by ProtossManse with Haru.\n\nIcon by ChobojaX.")
+        QMessageBox.information(self, "Credits", "MCAutoSubmit v0.9 by ProtossManse with Haru.\n\nIcon by ChobojaX.")
         
 
     def seedClicked(self):
@@ -115,7 +136,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         global path
         pathops = QFileDialog.Options()
         pathops |= QFileDialog.ShowDirsOnly
-        patht = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', path)
+        if self.langBox.currentText() == "한국어":
+            patht = QtWidgets.QFileDialog.getExistingDirectory(self, '검색...', path)
+        else:
+            patht = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', path)
         if patht != "":
             path = patht.replace("/", "\\")
             self.pathLine.setText(str(path))
@@ -127,7 +151,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         if self.langBox.currentText() == "한국어":
             WOWSANS.setValue("lang", "한국어")
             self.seedButton.setText("시드 변경")
-            self.label_2.setText("Real Time (수동):")
+            self.label.setText("인 게임 타임:")
+            self.label_2.setText("리얼 타임(수동):")
             self.label_7.setText("버전:")
             self.label_8.setText("난이도:")
             self.label_9.setText("모드:")
@@ -135,7 +160,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.label_13.setText("시드 타입:")
             self.label_10.setText("경로:")
             self.apiLabel.setText("<html><head/><body><p><span style=\" color:#0000ff;\">API 키 (URL):</span></p></body></html>")
-            self.pathButton.setText("찾기...")
+            self.pathButton.setText("검색...")
             self.label_14.setText("<html><head/><body><p align=\"center\"><span style=\" font-size:11pt; font-weight:600; color:#ff0000;\">1.16.1 전용</span></p></body></html>")
             self.startButton.setText("제출")
             self.resetButton.setText("새로고침\n(Esc)")
@@ -147,6 +172,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         elif self.langBox.currentText() == "English":
             WOWSANS.setValue("lang", "english")
             self.seedButton.setText("Change Seed")
+            self.label.setText("In-Game Time:")
             self.label_2.setText("Real Time(Manual):")
             self.label_7.setText("Version:")
             self.label_8.setText("Difficulty:")
@@ -163,7 +189,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             if self.ytLink.text() == "동영상 링크 (수동)":
                 self.ytLink.setText("Video Link(Manual)")
             if self.descriptionText.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요.":
-                self.descriptionText.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>")
+                self.descriptionText.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Don't enter the seed.</p></body></html>")
             
 
 
@@ -257,7 +283,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             elif mc_moded == False:
                 self.Mods.setCurrentText("Vanilla")
         except:
-            QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
+            if self.langBox.currentText() == "한국어":
+                QMessageBox.warning(self, "오류", "월드를 감지할 수 없음", QMessageBox.Ok)
+            else:
+                QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
 
     def link(self, event):
         webbrowser.open('https://www.speedrun.com/api/auth')
@@ -270,12 +299,18 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         res = requests.get('https://www.speedrun.com/api/v1/profile', headers={'X-API-Key': api_key})
         QtTest.QTest.qWait(300)
         if str(res) == "<Response [403]>":
-            QMessageBox.warning(self, "ERROR", "No User Found", QMessageBox.Ok)
+            if self.langBox.currentText() == "한국어":
+                QMessageBox.warning(self, "오류", "유저를 찾을 수 없음", QMessageBox.Ok)
+            else:
+                QMessageBox.warning(self, "ERROR", "No User Found", QMessageBox.Ok)
         elif str(res) == "<Response [200]>":
             srcuser = res.json()["data"]["names"]["international"]
             global userid
             userid = res.json()["data"]["id"]
-            QMessageBox.information(self, "Success", f"Found User. Hello {srcuser}. (id: {userid})")
+            if self.langBox.currentText() == "한국어":
+                QMessageBox.information(self, "성공", f"유저를 확인했습니다. 반갑습니다 {srcuser}. (아이디: {userid})")
+            else:
+                QMessageBox.information(self, "Success", f"Found User. Hello {srcuser}. (id: {userid})")
         self.linkButton.setEnabled(True)
 
     
@@ -286,7 +321,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         
 
 
-#-------------------------------------------macro--------------------- 
+#-------------------------------------------Submit--------------------- 
 
 
     def macro1(self):
@@ -330,15 +365,22 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         desc = self.descriptionText.toPlainText()
         WOWSANS.setValue("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"+desc+"</p></body></html>")
         WOWSANS.setValue("seedType", seedType)
-        try:
 
             
 
-            if rtHour == 00 and rtMin == 00 and rtSec == 00 and rtPoint == 000:
+        if rtHour == 00 and rtMin == 00 and rtSec == 00 and rtPoint == 000:
+            if self.langBox.currentText() == "한국어":
+                QMessageBox.warning(self, "오류", "리얼타임을 입력하지 않음")
+            else:
                 QMessageBox.warning(self, "ERROR", "You didn't enter RT(Real Time)!")
 
+        else:
+            if self.descriptionText.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요." or self.descriptionText.toPlainText() == "Description (Manual)\nDon't enter the seed.":
+                if self.langBox.currentText() == "한국어":
+                    QMessageBox.warning(self, "오류", "설명을 입력하지 않음. (공백 가능)")
+                else:
+                    QMessageBox.warning(self, "ERROR", "You didn't enter Description (Blank Available)")
             else:
-                
                 datas = {
                 "category": "mkeyl926",
                 "date": datetime.datetime.today().strftime("%Y-%m-%d"),
@@ -351,7 +393,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 },
                 "emulated": False,
                 "video": ytlink,
-                "comment": f"{seed}\r\n{desc}\r\n",
+                "comment": f"{seed}\r\n{desc}\r\nSubmitted by MCAutoSubmit",
                 "variables": {
                 "jlzkwql2": {
                     "type": "pre-defined",
@@ -378,7 +420,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     "value": modsapi
                 }
                 }
-            }
+                }
 
 
 
@@ -388,19 +430,25 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 QtTest.QTest.qWait(300)
                 r = requests.post('https://www.speedrun.com/api/v1/runs', json={'run': datas}, headers={'X-API-Key': api_key})
                 QtTest.QTest.qWait(300)
-                if r.status_code == 400:
+                if r.status_code == 201:
+                    if self.langBox.currentText() == "한국어":
+                        QMessageBox.information(self,"MCAutoSubmit", "등록이 완료되었습니다. ")
+                    else:
+                        QMessageBox.information(self,"MCAutoSubmit", "Submit Finished.")
+                else:
                     try:
-                        QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
+                        if self.langBox.currentText() == "한국어":
+                            QMessageBox.warning(self,"오류", str(r.json()['errors']))
+                        else:
+                            QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
                     except:
-                        QMessageBox.warning(self, "ERROR", "Unknown ERROR")
+                        if self.langBox.currentText() == "한국어":
+                            QMessageBox.warning(self, "오류", "알 수 없는 오류")
+                        else:
+                            QMessageBox.warning(self, "ERROR", "Unknown ERROR")
 
-                elif r.status_code == 201:
-                    QMessageBox.information(self,"Submit Run", "Submit Finished.")
                 
                 self.startButton.setEnabled(True)
-
-        except NameError:
-            QMessageBox.warning(self, "ERROR", "Press \'Test\' Button!")
 
 
         
