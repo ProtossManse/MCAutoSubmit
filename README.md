@@ -20,11 +20,11 @@ Minecraft: Java Edition All Versions Support, Windows Only, Any%Glitchless Only.
 
 Run program before start a run.
 
-For Pre 1.15 version, it cannot be detected whether it is mod or not, so you need to set it manually.
+For Pre 1.15 version, it cannot be detected whether it is mod or not, so you need to set manually.
 
-For Pre 1.9 version. it cannot be detected the version, so you need to set it manually.
+For Pre 1.9 version. it cannot be detected the version, so you need to set manually.
 
-For Pre 1.8 version, it cannot be detected the difficulty, so you need to set it manually
+For Pre 1.8 version, it cannot be detected the difficulty, so you need to set manually.
 
 ## Korean
 
