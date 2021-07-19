@@ -16,7 +16,7 @@ Icon by ChobojaX
 
 Minecraft: Java Edition speedrun.com Auto Submit Program.
 
-Minecraft: Java Edition 1.16.1 Only, Windows Only, Any%Glitchless Only.
+Minecraft: Java Edition All Versions Support, Windows Only, Any%Glitchless Only.
 
 Run program before start a run.
 
