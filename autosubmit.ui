@@ -134,9 +134,9 @@
    <widget class="QTextEdit" name="descriptionText">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>40</x>
       <y>240</y>
-      <width>331</width>
+      <width>341</width>
       <height>55</height>
      </rect>
     </property>
@@ -670,7 +670,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>30</x>
       <y>345</y>
-      <width>121</width>
+      <width>111</width>
       <height>21</height>
      </rect>
     </property>
