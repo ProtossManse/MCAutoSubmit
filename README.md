@@ -16,7 +16,7 @@ Icon by ChobojaX
 
 Minecraft: Java Edition speedrun.com Auto Submit Program.
 
-Minecraft: Java Edition All Versions Support, Windows Only, Any%Glitchless Only.
+Minecraft: Java Edition All Versions Support, Windows Only, Any% Glitchless Only.
 
 Run program before start a run.
 
@@ -31,6 +31,8 @@ For Pre 1.8 version, it cannot be detected the difficulty, so you need to set ma
 마인크래프트 자바 에디션 스피드런 자동 등록기입니다.
 
 마인크래프트 자바 에디션 모든 버전을 지원합니다. 윈도우 전용입니다.
+
+Any% Glitchless 카테고리만 지원합니다.
 
 런을 시작하기 전에 프로그램을 먼저 실행시켜주세요.
 
