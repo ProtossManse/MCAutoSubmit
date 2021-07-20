@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <!--
 MCAutoSubmit
-Copyright (C) 2021 by ProtossManse (Discord: 플토만세#3053)
+Copyright © 2021 by ProtossManse (Discord: 플토만세#3053)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,7 +17,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-
 
 <ui version="4.0">
  <class>MainWindow</class>
@@ -49,7 +47,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
    </font>
   </property>
   <property name="windowTitle">
-   <string>MCAutoSubmit v1.0.0</string>
+   <string>MCAutoSubmit v1.0.1</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="f3Button">
@@ -1055,10 +1053,10 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
+     <cursorShape>ArrowCursor</cursorShape>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#0000ff;&quot;&gt;API Key (URL):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;a href='https://www.speedrun.com/api/auth'&gt;API Key (URL):&lt;/a&gt;</string>
     </property>
    </widget>
    <widget class="QPushButton" name="linkButton">
@@ -1112,6 +1110,33 @@ p, li { white-space: pre-wrap; }
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>seedButton</tabstop>
+  <tabstop>langBox</tabstop>
+  <tabstop>sText</tabstop>
+  <tabstop>f3Box</tabstop>
+  <tabstop>version</tabstop>
+  <tabstop>diffiBox</tabstop>
+  <tabstop>Mods</tabstop>
+  <tabstop>seedType</tabstop>
+  <tabstop>igtHr</tabstop>
+  <tabstop>igtMin</tabstop>
+  <tabstop>igtSec</tabstop>
+  <tabstop>igtPoint</tabstop>
+  <tabstop>rtaHr</tabstop>
+  <tabstop>rtMin</tabstop>
+  <tabstop>rtSec</tabstop>
+  <tabstop>rtPoint</tabstop>
+  <tabstop>ytLink</tabstop>
+  <tabstop>resetButton</tabstop>
+  <tabstop>descriptionText</tabstop>
+  <tabstop>pathLine</tabstop>
+  <tabstop>pathButton</tabstop>
+  <tabstop>apiLine</tabstop>
+  <tabstop>linkButton</tabstop>
+  <tabstop>startButton</tabstop>
+  <tabstop>f3Button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

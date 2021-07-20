@@ -23,9 +23,7 @@ import keyboard
 from nbt.nbt import NBTFile
 import getpass
 import datetime
-import webbrowser
 import requests
-import json
 
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -82,15 +80,18 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.rtPoint.setValidator(self.onlyInt)
         self.langBox.currentIndexChanged.connect(self.lang)
         self.creditLabel.mousePressEvent = self.credit
-        self.apiLabel.mousePressEvent = self.link
         self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
         self.auto()
 
         if WOWSANS.value("lang") == "한국어":
             self.langBox.setCurrentText("한국어")
+        else:
+            self.langBox.setCurrentText("English")
+
+        self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord 플토만세#3053)\n\nMCAutoSubmit v1.0.0 by ProtossManse with Haru.\n\nIcon by ChobojaX.\n\nMCAutoSubmit is distributed under the GNU General Public License v3.0.")
+        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord 플토만세#3053)<br><br>MCAutoSubmit v1.0.1 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is conveyed under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -138,7 +139,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.creditLabel.setText("크레딧")
             self.label_13.setText("시드 타입:")
             self.label_10.setText("경로:")
-            self.apiLabel.setText("<html><head/><body><p><span style=\" color:#0000ff;\">API 키 (URL):</span></p></body></html>")
+            self.apiLabel.setText("<a href='https://www.speedrun.com/api/auth'>API 키 (URL):</a>")
+            self.apiLabel.setOpenExternalLinks(True)
             self.pathButton.setText("검색...")
             self.startButton.setText("제출")
             self.resetButton.setText("새로고침\n(Esc)")
@@ -157,7 +159,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.label_9.setText("Mods:")
             self.label_13.setText("Seed Type:")
             self.label_10.setText("Path:")
-            self.apiLabel.setText("<html><head/><body><p><span style=\" color:#0000ff;\">API Key (URL):</span></p></body></html>")
+            self.apiLabel.setText("<a href='https://www.speedrun.com/api/auth'>API Key (URL):</a>")
+            self.apiLabel.setOpenExternalLinks(True)
             self.creditLabel.setText("Credits")
             self.pathButton.setText("Browse...")
             self.linkButton.setText("Test...")
@@ -174,147 +177,146 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         
         mc_dir = path
         mc_world = os.path.join(mc_dir, "saves")
-
-        wrm = sorted([os.path.join(mc_world, s) for s in os.listdir(mc_world)], key=os.path.getmtime, reverse=True)
-        for w in wrm.copy()[:3]:
-            try:
-                world = w
-                dat = NBTFile(os.path.join(world, "level.dat"))
-                ctime = os.path.getctime(world)
-                ctime = datetime.datetime.fromtimestamp(ctime)
-                if not int(str(dat["Data"]["Time"])):
-                    continue
-                else:
-                    break
-            except:
-                continue
-
-        try:            
-            mc_isend = str(dat["Data"]["Player"]["seenCredits"])
-            if mc_isend == "0":
-                mc_isend = False
-            else:
-                mc_isend = True
-        except:
-            mc_isend = None
-        mc_igt = str(dat["Data"]["Time"])
-        mc_igt = int(mc_igt) - 1
         try:
-            mc_version = str(dat["Data"]["Version"]["Name"])
-            if mc_version == "1.7.10":
-                minor = mc_version[:-3]
-            else:
-                minor = mc_version[:-2]
-                print(minor)
+            wrm = sorted([os.path.join(mc_world, s) for s in os.listdir(mc_world)], key=os.path.getmtime, reverse=True)
+            for w in wrm.copy()[:3]:
+                try:
+                    world = w
+                    dat = NBTFile(os.path.join(world, "level.dat"))
+                    ctime = os.path.getctime(world)
+                    ctime = datetime.datetime.fromtimestamp(ctime)
+                    if not int(str(dat["Data"]["Time"])):
+                        continue
+                    else:
+                        break
+                except:
+                    continue
+
+            try:            
+                mc_isend = str(dat["Data"]["Player"]["seenCredits"])
+                if mc_isend == "0":
+                    mc_isend = False
+                else:
+                    mc_isend = True
+            except:
+                mc_isend = None
+            mc_igt = str(dat["Data"]["Time"])
+            mc_igt = int(mc_igt) - 1
+            try:
+                mc_version = str(dat["Data"]["Version"]["Name"])
+                if mc_version == "1.7.10":
+                    minor = mc_version[:-3]
+                else:
+                    minor = mc_version[:-2]
+                    print(minor)
+                
+
+                if minor == "1.16" or minor == "1.17":
+                    self.version.setCurrentText(mc_version)
+                    mc_diffi = str(dat["Data"]["Difficulty"])
+                    mc_hardcore = str(dat["Data"]["hardcore"])
+                    mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
+                    mc_moded = str(dat["Data"]["WasModded"])
+                elif minor == "1.15":
+                    self.version.setCurrentText(mc_version)
+                    mc_diffi = str(dat["Data"]["Difficulty"])
+                    mc_hardcore = str(dat["Data"]["hardcore"])
+                    mc_seed = str(dat["Data"]["RandomSeed"])
+                    mc_moded = str(dat["Data"]["WasModded"])
+                elif minor == "1.14":
+                    self.version.setCurrentText(mc_version)
+                    mc_diffi = str(dat["Data"]["Difficulty"])
+                    mc_hardcore = str(dat["Data"]["hardcore"])
+                    mc_seed = str(dat["Data"]["RandomSeed"])
+                    mc_moded = None                
+            except: 
+                try: # 1.8
+                    self.version.setCurrentText("Unknown")
+                    mc_diffi = str(dat["Data"]["Difficulty"])
+                    mc_hardcore = str(dat["Data"]["hardcore"])
+                    mc_seed = str(dat["Data"]["RandomSeed"])
+                    mc_moded = None
+                except: #pre 1.8
+                    self.version.setCurrentText("Unknown")
+                    mc_diffi = None
+                    mc_hardcore = str(dat["Data"]["hardcore"])
+                    mc_seed = str(dat["Data"]["RandomSeed"])
+                    mc_moded = None
+
+                
+
+            global mc_sec
+            mc_sec = int(mc_igt) / 20
             
 
-            if minor == "1.16" or minor == "1.17":
-                self.version.setCurrentText(mc_version)
-                mc_diffi = str(dat["Data"]["Difficulty"])
-                mc_hardcore = str(dat["Data"]["hardcore"])
-                mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
-                mc_moded = str(dat["Data"]["WasModded"])
-            elif minor == "1.15":
-                self.version.setCurrentText(mc_version)
-                mc_diffi = str(dat["Data"]["Difficulty"])
-                mc_hardcore = str(dat["Data"]["hardcore"])
-                mc_seed = str(dat["Data"]["RandomSeed"])
-                mc_moded = str(dat["Data"]["WasModded"])
-            elif minor == "1.14":
-                self.version.setCurrentText(mc_version)
-                mc_diffi = str(dat["Data"]["Difficulty"])
-                mc_hardcore = str(dat["Data"]["hardcore"])
-                mc_seed = str(dat["Data"]["RandomSeed"])
-                mc_moded = None                
-        except: 
-            try: # 1.8
-                self.version.setCurrentText("Unknown")
-                mc_diffi = str(dat["Data"]["Difficulty"])
-                mc_hardcore = str(dat["Data"]["hardcore"])
-                mc_seed = str(dat["Data"]["RandomSeed"])
-                mc_moded = None
-            except: #pre 1.8
-                self.version.setCurrentText("Unknown")
-                mc_diffi = None
-                mc_hardcore = str(dat["Data"]["hardcore"])
-                mc_seed = str(dat["Data"]["RandomSeed"])
-                mc_moded = None
+            dot = str(mc_sec)
+            dot = dot.index(".")
+            intsec = str(mc_sec)[:int(dot)]
+            min = int(intsec) // 60
+            hr = min // 60
+            sec = int(intsec) % 60
+            min = min % 60
+            ms = str(mc_sec)[int(dot) + 1:]
+            if len(ms) == 2:
+                ms = ms + "0"
+            elif len(ms) == 1:
+                ms = ms + "00"
 
+            self.sText.setText("Seed: " + mc_seed)
+            if mc_hardcore == "1":
+                mc_diffi = "Hardcore"
+                self.diffiBox.setCurrentText("Hardcore")
+            elif mc_hardcore == "0":
+                if mc_diffi == "1":
+                    mc_diffi = "Easy"
+                    self.diffiBox.setCurrentText("Easy")
+                elif mc_diffi == "2":
+                    mc_diffi = "Normal"
+                    self.diffiBox.setCurrentText("Normal")
+                elif mc_diffi == "3":
+                    mc_diffi = "Hard"
+                    self.diffiBox.setCurrentText("Hard")
+                elif mc_diffi == None:
+                    self.diffiBox.setCurrentText("Unknown")
+            if mc_moded == "1":
+                mc_moded = True
+            elif mc_moded == "0":
+                mc_moded = False
             
-
-        global mc_sec
-        mc_sec = int(mc_igt) / 20
-        
-
-        dot = str(mc_sec)
-        dot = dot.index(".")
-        intsec = str(mc_sec)[:int(dot)]
-        min = int(intsec) // 60
-        hr = min // 60
-        sec = int(intsec) % 60
-        min = min % 60
-        ms = str(mc_sec)[int(dot) + 1:]
-        if len(ms) == 2:
-            ms = ms + "0"
-        elif len(ms) == 1:
-            ms = ms + "00"
-
-        self.sText.setText("Seed: " + mc_seed)
-        if mc_hardcore == "1":
-            mc_diffi = "Hardcore"
-            self.diffiBox.setCurrentText("Hardcore")
-        elif mc_hardcore == "0":
-            if mc_diffi == "1":
-                mc_diffi = "Easy"
-                self.diffiBox.setCurrentText("Easy")
-            elif mc_diffi == "2":
-                mc_diffi = "Normal"
-                self.diffiBox.setCurrentText("Normal")
-            elif mc_diffi == "3":
-                mc_diffi = "Hard"
-                self.diffiBox.setCurrentText("Hard")
-            elif mc_diffi == None:
-                self.diffiBox.setCurrentText("Unknown")
-        if mc_moded == "1":
-            mc_moded = True
-        elif mc_moded == "0":
-            mc_moded = False
-        
-        if mc_isend == False or mc_isend == None:
-            self.igtHr.setText(str(hr))
-            self.igtMin.setText(str(min))
-            self.igtSec.setText(str(sec))
-            self.igtPoint.setText(str(ms))
-            self.auto_stop = False
-        elif mc_isend == True:
-            if self.auto_stop == False:
+            if mc_isend == False or mc_isend == None:
                 self.igtHr.setText(str(hr))
                 self.igtMin.setText(str(min))
                 self.igtSec.setText(str(sec))
                 self.igtPoint.setText(str(ms))
-                self.auto_stop = True
+                self.auto_stop = False
+            elif mc_isend == True:
+                if self.auto_stop == False:
+                    self.igtHr.setText(str(hr))
+                    self.igtMin.setText(str(min))
+                    self.igtSec.setText(str(sec))
+                    self.igtPoint.setText(str(ms))
+                    self.auto_stop = True
 
-            
+                
 
 
-        if mc_moded == True:
-            if minor == "1.16":
-                self.Mods.setCurrentText("CaffeineMC")
-            else:
-                self.Mods.setCurrentText("Optifine")
-        elif mc_moded == False:
-            self.Mods.setCurrentText("Vanilla")
-        elif mc_moded == None:
-            self.Mods.setCurrentText("Unknown")
+            if mc_moded == True:
+                if minor == "1.16":
+                    self.Mods.setCurrentText("CaffeineMC")
+                else:
+                    self.Mods.setCurrentText("Optifine")
+            elif mc_moded == False:
+                self.Mods.setCurrentText("Vanilla")
+            elif mc_moded == None:
+                self.Mods.setCurrentText("Unknown")
         
-    
-        # if self.langBox.currentText() == "한국어":
-        #     QMessageBox.warning(self, "오류", "월드를 감지할 수 없음", QMessageBox.Ok)
-        # else:
-        #     QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
+        except:
+            if self.langBox.currentText() == "한국어":
+                QMessageBox.warning(self, "오류", "월드를 감지할 수 없음", QMessageBox.Ok)
+            else:
+                QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
 
-    def link(self, event):
-        webbrowser.open('https://www.speedrun.com/api/auth')
+
 
     def test(self):
         WOWSANS.setValue("api", self.apiLine.text())
@@ -511,7 +513,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     },
                     "emulated": False,
                     "video": ytlink,
-                    "comment": f"{seed}\r\n{desc}\r\nSubmitted by MCAutoSubmit",
+                    "comment": f"{seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit v1.0.1",
                     "variables": {
                     "jlzkwql2": {
                         "type": "pre-defined",
@@ -577,3 +579,6 @@ if __name__ == "__main__":
     main_dialog = MainDialog()
     main_dialog.show()
     app.exec_()
+
+
+# Spaghetti lol pagman
