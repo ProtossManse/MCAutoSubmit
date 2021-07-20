@@ -66,7 +66,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.pathLine.setText(WOWSANS.value("path", path))
         self.apiLine.setText(WOWSANS.value("api"))
-        # self.descriptionText.setText(WOWSANS.value("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>"))
+        self.descriptionText.setText(WOWSANS.value("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>"))
         self.seedType.setCurrentText(WOWSANS.value("seedType", "RSG"))
         self.auto_stop = False
         self.onlyInt = QIntValidator()
@@ -204,6 +204,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             mc_igt = int(mc_igt) - 1
             try:
                 mc_version = str(dat["Data"]["Version"]["Name"])
+                global minor
                 if mc_version == "1.7.10":
                     minor = mc_version[:-3]
                 else:
@@ -340,6 +341,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 QMessageBox.information(self, "Success", f"Found User. Hello {srcuser}. (id: {userid})")
         self.linkButton.setEnabled(True)
 
+    def closeEvent(self, QCloseEvent):
+        WOWSANS.setValue("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"+self.descriptionText.toPlainText()+"</p></body></html>")
+        WOWSANS.setValue("seedType", self.seedType.currentText())
+        
     
         
 
@@ -461,13 +466,13 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         else:
             f3 = "5lee2vkl"
         
-        if version == "1.16.1":
+        if minor == "1.16" or minor == "1.17":
             versionKey = vdict[version]
             versionRange = "4qye4731"
-        elif version == "1.15.2" or version == "1.14.4":
+        elif minor == "1.15" or minor == "1.14" or minor == "1.13" or minor == "1.12" or minor == "1.11" or minor == "1.10" or minor == "1.9":
             versionKey = vdict[version]
             versionRange = "21go6e6q"
-        elif version == "1.7.10" or version == "1.8.9" or version == "1.7.4" or version == "1.7.2" or version == "1.6.4":
+        else:
             versionKey = vdict[version]
             versionRange = "gq7zo9p1"
 
