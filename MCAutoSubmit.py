@@ -1,6 +1,6 @@
 '''
 MCAutoSubmit
-Copyright © 2021 by ProtossManse (Discord: 플토만세#3053)
+Copyright © 2021 by ProtossManse (Discord: ProtossManse#3053)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord 플토만세#3053)<br><br>MCAutoSubmit v1.1.0 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit v1.1.0 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
