@@ -1,6 +1,6 @@
 # MCAutoSubmit
 
-Copyright © 2021 ProtossManse (Discord 플토만세#3053)
+Copyright © 2021 ProtossManse (Discord ProtossManse#3053)
 
 MCAutoSubmit is under the [GNU General Public License v3.0](https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt).
 
