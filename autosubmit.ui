@@ -1,23 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!--
-MCAutoSubmit
-Copyright © 2021 by ProtossManse (Discord: 플토만세#3053)
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
-
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -32,7 +13,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   <property name="minimumSize">
    <size>
     <width>420</width>
-    <height>430</height>
+    <height>460</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -47,35 +28,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
    </font>
   </property>
   <property name="windowTitle">
-   <string>MCAutoSubmit v1.0.1</string>
+   <string>MCAutoSubmit v1.1.0</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="f3Button">
-    <property name="geometry">
-     <rect>
-      <x>295</x>
-      <y>40</y>
-      <width>1</width>
-      <height>1</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="seedButton">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>81</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Change Seed</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="pathLine">
     <property name="geometry">
      <rect>
@@ -84,22 +39,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
       <width>291</width>
       <height>23</height>
      </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="sText">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>271</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string notr="true">Seed: </string>
     </property>
     <property name="readOnly">
      <bool>true</bool>
@@ -124,32 +63,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
      <string>Path:</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="f3Box">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>50</y>
-      <width>71</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>맑은 고딕</family>
-      <pointsize>13</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-      <underline>false</underline>
-     </font>
-    </property>
-    <property name="text">
-     <string>F3</string>
-    </property>
-    <property name="checked">
-     <bool>false</bool>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="descriptionText">
     <property name="geometry">
      <rect>
@@ -158,6 +71,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
       <width>341</width>
       <height>55</height>
      </rect>
+    </property>
+    <property name="markdown">
+     <string>Description (Manual)
+
+Don't enter the seed.
+
+</string>
     </property>
     <property name="html">
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -187,7 +107,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>130</x>
       <y>410</y>
       <width>161</width>
       <height>31</height>
@@ -201,7 +121,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>70</y>
+      <y>60</y>
       <width>381</width>
       <height>161</height>
      </rect>
@@ -213,7 +133,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>30</y>
+       <y>29</y>
        <width>81</width>
        <height>22</height>
       </rect>
@@ -248,7 +168,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>30</y>
+       <y>29</y>
        <width>91</width>
        <height>22</height>
       </rect>
@@ -281,7 +201,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>81</y>
+       <y>80</y>
        <width>16</width>
        <height>21</height>
       </rect>
@@ -294,7 +214,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>35</x>
-       <y>80</y>
+       <y>79</y>
        <width>16</width>
        <height>21</height>
       </rect>
@@ -307,7 +227,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>29</y>
        <width>71</width>
        <height>22</height>
       </rect>
@@ -682,7 +602,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>130</y>
+       <y>129</y>
        <width>16</width>
        <height>21</height>
       </rect>
@@ -708,7 +628,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>310</x>
-       <y>12</y>
+       <y>11</y>
        <width>131</width>
        <height>20</height>
       </rect>
@@ -720,9 +640,9 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>12</y>
-       <width>56</width>
+       <x>11</x>
+       <y>10</y>
+       <width>51</width>
        <height>20</height>
       </rect>
      </property>
@@ -734,7 +654,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>85</x>
-       <y>80</y>
+       <y>79</y>
        <width>21</width>
        <height>21</height>
       </rect>
@@ -750,7 +670,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+       <y>129</y>
        <width>21</width>
        <height>21</height>
       </rect>
@@ -766,7 +686,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>123</x>
-       <y>130</y>
+       <y>129</y>
        <width>31</width>
        <height>20</height>
       </rect>
@@ -782,7 +702,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>85</x>
-       <y>130</y>
+       <y>129</y>
        <width>21</width>
        <height>20</height>
       </rect>
@@ -798,7 +718,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>45</x>
-       <y>130</y>
+       <y>129</y>
        <width>21</width>
        <height>20</height>
       </rect>
@@ -814,7 +734,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
+       <y>59</y>
        <width>101</width>
        <height>16</height>
       </rect>
@@ -827,7 +747,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>12</y>
+       <y>11</y>
        <width>91</width>
        <height>20</height>
       </rect>
@@ -840,7 +760,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>110</y>
+       <y>109</y>
        <width>111</width>
        <height>16</height>
       </rect>
@@ -853,7 +773,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>131</y>
+       <y>130</y>
        <width>16</width>
        <height>21</height>
       </rect>
@@ -866,7 +786,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>45</x>
-       <y>80</y>
+       <y>79</y>
        <width>21</width>
        <height>20</height>
       </rect>
@@ -882,7 +802,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>123</x>
-       <y>80</y>
+       <y>79</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -898,7 +818,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>35</x>
-       <y>130</y>
+       <y>129</y>
        <width>16</width>
        <height>21</height>
       </rect>
@@ -925,7 +845,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>12</y>
+       <y>11</y>
        <width>91</width>
        <height>20</height>
       </rect>
@@ -938,7 +858,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>80</y>
+       <y>79</y>
        <width>16</width>
        <height>21</height>
       </rect>
@@ -951,7 +871,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>310</x>
-       <y>30</y>
+       <y>29</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -974,7 +894,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>79</y>
        <width>21</width>
        <height>21</height>
       </rect>
@@ -993,7 +913,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QComboBox" name="langBox">
     <property name="geometry">
      <rect>
-      <x>335</x>
+      <x>340</x>
       <y>20</y>
       <width>61</width>
       <height>22</height>
@@ -1013,7 +933,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="creditLabel">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>300</x>
       <y>410</y>
       <width>41</width>
       <height>31</height>
@@ -1034,6 +954,9 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::LinksAccessibleByMouse</set>
     </property>
    </widget>
    <widget class="QLabel" name="apiLabel">
@@ -1103,6 +1026,45 @@ p, li { white-space: pre-wrap; }
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QCheckBox" name="f3Box">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>20</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>맑은 고딕</family>
+      <pointsize>13</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+      <underline>false</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>F3</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="seedButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change Seed</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">
@@ -1111,9 +1073,8 @@ p, li { white-space: pre-wrap; }
   </widget>
  </widget>
  <tabstops>
-  <tabstop>seedButton</tabstop>
   <tabstop>langBox</tabstop>
-  <tabstop>sText</tabstop>
+  <tabstop>seedButton</tabstop>
   <tabstop>f3Box</tabstop>
   <tabstop>version</tabstop>
   <tabstop>diffiBox</tabstop>
@@ -1135,7 +1096,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>apiLine</tabstop>
   <tabstop>linkButton</tabstop>
   <tabstop>startButton</tabstop>
-  <tabstop>f3Button</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -25,6 +25,7 @@ import getpass
 import datetime
 import requests
 
+
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -66,7 +67,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.pathLine.setText(WOWSANS.value("path", path))
         self.apiLine.setText(WOWSANS.value("api"))
-        self.descriptionText.setText(WOWSANS.value("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Do not enter the seed.</p></body></html>"))
+        self.descriptionText.setPlainText(WOWSANS.value("desc", "Description (Manual)\nDon't enter the seed."))
+        self.descriptionText.setAlignment(Qt.AlignCenter)
         self.seedType.setCurrentText(WOWSANS.value("seedType", "RSG"))
         self.auto_stop = False
         self.onlyInt = QIntValidator()
@@ -91,7 +93,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord 플토만세#3053)<br><br>MCAutoSubmit v1.0.1 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is conveyed under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord 플토만세#3053)<br><br>MCAutoSubmit v1.1.0 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -102,7 +104,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
         if ok1 == True:
             if seed != "":
-                self.sText.setText("Seed: " + str(seed))
+                global mc_seed
+                mc_seed = str(seed)
         
     def keyboardEventReceived(self, event):
         if event.event_type == 'down':
@@ -148,7 +151,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             if self.ytLink.text() == "Video Link(Manual)":
                 self.ytLink.setText("동영상 링크 (수동)")
             if self.descriptionText.toPlainText() == "Description (Manual)\nDon't enter the seed.":
-                self.descriptionText.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">설명 (수동)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">시드를 입력하지 마세요.</p></body></html>")
+                self.descriptionText.setPlainText("설명 (수동)\n시드를 입력하지 마세요.")
         elif self.langBox.currentText() == "English":
             WOWSANS.setValue("lang", "english")
             self.seedButton.setText("Change Seed")
@@ -169,7 +172,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             if self.ytLink.text() == "동영상 링크 (수동)":
                 self.ytLink.setText("Video Link(Manual)")
             if self.descriptionText.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요.":
-                self.descriptionText.setText("<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Description (Manual)</p><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Don't enter the seed.</p></body></html>")
+                self.descriptionText.setPlainText("Description (Manual)\nDon't enter the seed.")
             
 
 
@@ -211,6 +214,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     minor = mc_version[:-2]
                     print(minor)
                 
+                global mc_seed
 
                 if minor == "1.16" or minor == "1.17":
                     self.version.setCurrentText(mc_version)
@@ -263,7 +267,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             elif len(ms) == 1:
                 ms = ms + "00"
 
-            self.sText.setText("Seed: " + mc_seed)
             if mc_hardcore == "1":
                 mc_diffi = "Hardcore"
                 self.diffiBox.setCurrentText("Hardcore")
@@ -342,7 +345,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.linkButton.setEnabled(True)
 
     def closeEvent(self, QCloseEvent):
-        WOWSANS.setValue("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"+self.descriptionText.toPlainText()+"</p></body></html>")
+        WOWSANS.setValue("desc", self.descriptionText.toPlainText())
         WOWSANS.setValue("seedType", self.seedType.currentText())
         
     
@@ -480,9 +483,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
         ytlink = self.ytLink.text()
-        seed = self.sText.text()
         desc = self.descriptionText.toPlainText()
-        WOWSANS.setValue("desc", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:\'맑은 고딕\'; font-size:9pt; font-weight:400; font-style:normal;\"><p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"+desc+"</p></body></html>")
+        WOWSANS.setValue("desc", desc)
         WOWSANS.setValue("seedType", seedType)
 
             
@@ -518,7 +520,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     },
                     "emulated": False,
                     "video": ytlink,
-                    "comment": f"{seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit v1.0.1",
+                    "comment": f"{mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit v1.1.0",
                     "variables": {
                     "jlzkwql2": {
                         "type": "pre-defined",
@@ -586,4 +588,4 @@ if __name__ == "__main__":
     app.exec_()
 
 
-# Spaghetti lol pagman
+# sPagHeTTi cOdE lol
