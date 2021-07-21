@@ -352,6 +352,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
     def closeEvent(self, QCloseEvent):
         WOWSANS.setValue("desc", self.descriptionText.toPlainText())
         WOWSANS.setValue("seedType", self.seedType.currentText())
+        WOWSANS.setValue("api", self.apiLine.text())
         
     
         
