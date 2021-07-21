@@ -68,6 +68,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.pathLine.setText(WOWSANS.value("path", path))
         self.apiLine.setText(WOWSANS.value("api"))
         self.descriptionText.setPlainText(WOWSANS.value("desc", "Description (Manual)\nDon't enter the seed."))
+        self.descriptionText.selectAll()
         self.descriptionText.setAlignment(Qt.AlignCenter)
         self.seedType.setCurrentText(WOWSANS.value("seedType", "RSG"))
         self.auto_stop = False
@@ -152,6 +153,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 self.ytLink.setText("동영상 링크 (수동)")
             if self.descriptionText.toPlainText() == "Description (Manual)\nDon't enter the seed.":
                 self.descriptionText.setPlainText("설명 (수동)\n시드를 입력하지 마세요.")
+                self.descriptionText.selectAll()
+                self.descriptionText.setAlignment(Qt.AlignCenter)
         elif self.langBox.currentText() == "English":
             WOWSANS.setValue("lang", "english")
             self.seedButton.setText("Change Seed")
@@ -173,6 +176,8 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 self.ytLink.setText("Video Link(Manual)")
             if self.descriptionText.toPlainText() == "설명 (수동)\n시드를 입력하지 마세요.":
                 self.descriptionText.setPlainText("Description (Manual)\nDon't enter the seed.")
+                self.descriptionText.selectAll()
+                self.descriptionText.setAlignment(Qt.AlignCenter)
             
 
 
