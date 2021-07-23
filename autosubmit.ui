@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MCAutoSubmit v1.1.0</string>
+   <string>MCAutoSubmit v1.1.1</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLineEdit" name="pathLine">
@@ -183,7 +183,7 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <property name="text">
-       <string>CaffeineMC</string>
+       <string>Modded</string>
       </property>
      </item>
      <item>

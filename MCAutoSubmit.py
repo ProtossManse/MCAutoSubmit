@@ -94,7 +94,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit v1.1.0 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit v1.1.1 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -311,7 +311,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
             if mc_moded == True:
                 if minor == "1.16":
-                    self.Mods.setCurrentText("CaffeineMC")
+                    self.Mods.setCurrentText("Modded")
                 else:
                     self.Mods.setCurrentText("Optifine")
             elif mc_moded == False:
@@ -456,7 +456,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         mods = self.Mods.currentText()
         if mods == "Vanilla":
             modsapi = "21gyvwm1"
-        elif mods == "CaffeineMC":
+        elif mods == "Modded":
             modsapi = "jq6kxd3l"
         elif mods == "Optifine":
             modsapi = "jqzk8rmq"
@@ -526,7 +526,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     },
                     "emulated": False,
                     "video": ytlink,
-                    "comment": f"{mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit v1.1.0",
+                    "comment": f"{mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit v1.1.1",
                     "variables": {
                     "jlzkwql2": {
                         "type": "pre-defined",
@@ -594,4 +594,4 @@ if __name__ == "__main__":
     app.exec_()
 
 
-# sPagHeTTi cOdE lol
+# sPaGhEtTi cOdE lol
