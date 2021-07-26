@@ -94,7 +94,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit v1.1.1 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit v1.1.2 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -213,11 +213,14 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             try:
                 mc_version = str(dat["Data"]["Version"]["Name"])
                 global minor
-                if mc_version == "1.7.10":
-                    minor = mc_version[:-3]
-                else:
-                    minor = mc_version[:-2]
-                    print(minor)
+                if mc_version.count(".") == 2:
+                    if mc_version == "1.7.10":
+                        minor = mc_version[:-3]
+                    else:
+                        minor = mc_version[:-2]
+                        print(minor)
+                elif mc_version.count(".") == 1:
+                    minor = mc_version
                 
                 global mc_seed
 
@@ -370,6 +373,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         rtMin = int(self.rtMin.text())
         rtSec = int(self.rtSec.text())
         rtPoint = float(self.rtPoint.text())
+        igtHr = int(self.igtHr.text())
+        igtMin = int(self.igtMin.text())
+        igtSec = int(self.igtSec.text())
+        igtPoint = float(self.igtPoint.text())
         api_key = self.apiLine.text()
         seedType = self.seedType.currentText()
         version = self.version.currentText()
@@ -522,11 +529,11 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     "times": {
                     "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
                     "realtime_noloads": 0,
-                    "ingame": float(mc_sec)
+                    "ingame": igtHr * 3600 + igtMin * 60 + igtSec + igtPoint / 1000,
                     },
                     "emulated": False,
                     "video": ytlink,
-                    "comment": f"{mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit v1.1.1",
+                    "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit v1.1.2",
                     "variables": {
                     "jlzkwql2": {
                         "type": "pre-defined",
