@@ -32,6 +32,10 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5 import QtTest
 
+
+version = "v1.1.2"
+
+
 username = getpass.getuser()
 path = os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")
 WOWSANS = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MCAutoSubmit")
@@ -94,7 +98,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", "Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit v1.1.2 by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {version} by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -357,11 +361,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         WOWSANS.setValue("seedType", self.seedType.currentText())
         WOWSANS.setValue("api", self.apiLine.text())
         
-    
-        
-
-
-
         
 
 
@@ -533,7 +532,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     },
                     "emulated": False,
                     "video": ytlink,
-                    "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit v1.1.2",
+                    "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {version}",
                     "variables": {
                     "jlzkwql2": {
                         "type": "pre-defined",
