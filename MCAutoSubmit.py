@@ -87,7 +87,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.rtPoint.setValidator(self.onlyInt)
         self.langBox.currentIndexChanged.connect(self.lang)
         self.creditLabel.mousePressEvent = self.credit
-        self.statusBar().showMessage("MCAutoSubmit by ProtossManse with Haru")
+        self.statusBar().showMessage("MCAutoSubmit by ProtossManse")
         self.auto()
 
         if WOWSANS.value("lang") == "한국어":
@@ -98,7 +98,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {version} by ProtossManse with Haru.<br><br>Icon by ChobojaX.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {version} by ProtossManse.<br><br>Icon by ChobojaX.<br><br>Special Thanks to Haruwww, Azura, Meera and Salix.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -317,7 +317,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
             if mc_moded == True:
-                if minor == "1.16":
+                if minor == "1.16" or "1.17":
                     self.Mods.setCurrentText("Modded")
                 else:
                     self.Mods.setCurrentText("Optifine")
@@ -586,7 +586,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                             else:
                                 QMessageBox.warning(self, "ERROR", "Unknown ERROR")
 
-                    
                     self.startButton.setEnabled(True)
 
 

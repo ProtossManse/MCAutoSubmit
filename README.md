@@ -6,9 +6,11 @@ MCAutoSubmit is under the [GNU General Public License v3.0](https://github.com/P
 
 ---
 
-MCAutoSubmit by ProtossManse with Haru
+MCAutoSubmit by ProtossManse.
 
-Icon by ChobojaX
+Icon by ChobojaX.
+
+Special Thanks to Haruwww, Azura, Meera and Salix.
 
 ---
 
