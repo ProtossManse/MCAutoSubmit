@@ -10,7 +10,7 @@ MCAutoSubmit by ProtossManse.
 
 Icon by ChobojaX.
 
-Special Thanks to Haruwww, Azura, Meera and Salix.
+Special Thanks to Haruww, Azura, Meera and Salix.
 
 ---
 
