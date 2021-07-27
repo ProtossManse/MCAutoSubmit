@@ -33,7 +33,7 @@ from PyQt5 import uic
 from PyQt5 import QtTest
 
 
-version = "v1.1.2"
+version = "v1.1.3"
 
 
 username = getpass.getuser()
