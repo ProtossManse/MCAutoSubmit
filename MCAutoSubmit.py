@@ -313,7 +313,9 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     self.igtPoint.setText(str(ms))
                     self.auto_stop = True
 
-                
+
+            if int(mc_igt) <= 10 or int(mc_igt) == None:
+                self.f3Box.setChecked(False)
 
 
             if mc_moded == True:
