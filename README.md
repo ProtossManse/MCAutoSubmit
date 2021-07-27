@@ -20,7 +20,7 @@ Minecraft: Java Edition speedrun.com Auto Submit Program.
 
 Minecraft: Java Edition All Versions Support, Windows Only, Any% Glitchless Only.
 
-Run program before start a run.
+Run application before start a run.
 
 For Pre 1.15 version, it cannot be detected whether it is mod or not, so you need to set it manually.
 
