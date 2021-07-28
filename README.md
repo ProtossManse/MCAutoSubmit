@@ -16,7 +16,7 @@ Special Thanks to Haruww, Azura, Meera and Salix.
 
 ## English
 
-Minecraft: Java Edition [speedrun.com Any% Glitchless](https://www.speedrun.com/mc) Auto Submitter.
+[Minecraft: Java Edition speedrun.com Any% Glitchless](https://www.speedrun.com/mc) Auto Submitter.
 
 Minecraft: Java Edition All Versions Support, Windows Only.
 
