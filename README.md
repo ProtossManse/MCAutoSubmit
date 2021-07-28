@@ -22,7 +22,7 @@ Minecraft: Java Edition All Versions Support, Windows Only.
 
 Run application before start a run.
 
-This application automatically reads the difficulty level, seed, mod, version, IGT, and more to make it easier for the player to submit a run by simply entering only a description, link, RTA, and seed type.
+This application automatically reads the difficulty, seed, mod, version, IGT, and more to make it easier for the player to submit a run by simply entering only a description, link, RTA, and seed type.
 
 For Pre 1.15 version, it cannot be detected whether it is mod or not, so you need to set it manually.
 
