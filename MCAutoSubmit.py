@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtWidgets
 import sys
 import os
 import keyboard
@@ -38,6 +37,7 @@ version = "v1.1.3"
 
 username = getpass.getuser()
 path = os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")
+ghostmode = False
 WOWSANS = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MCAutoSubmit")
 
 def resource_path(relative_path):
@@ -70,6 +70,13 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.linkButton.clicked.connect(self.test)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
         self.pathLine.setText(WOWSANS.value("path", path))
+        global ghostmode
+        if os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == True:
+            self.grm.setText("Ghost Runner Mode ON")
+            ghostmode = True
+        elif os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == False:
+            self.grm.setText("Ghost Runner Mode OFF")
+            ghostmode = False
         self.apiLine.setText(WOWSANS.value("api"))
         self.descriptionText.setPlainText(WOWSANS.value("desc", "Description (Manual)\nDon't enter the seed."))
         self.descriptionText.selectAll()
@@ -94,7 +101,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.langBox.setCurrentText("한국어")
         else:
             self.langBox.setCurrentText("English")
-
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
@@ -122,16 +128,24 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         
     def browse(self):
         global path
+        global ghostmode
         pathops = QFileDialog.Options()
         pathops |= QFileDialog.ShowDirsOnly
         if self.langBox.currentText() == "한국어":
-            patht = QtWidgets.QFileDialog.getExistingDirectory(self, '검색...', path)
+            patht = QFileDialog.getExistingDirectory(self, '검색...', path)
         else:
-            patht = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse...', path)
+            patht = QFileDialog.getExistingDirectory(self, 'Browse...', path)
         if patht != "":
             path = patht.replace("/", "\\")
             self.pathLine.setText(str(path))
             WOWSANS.setValue("path", str(path))
+        
+        if os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == True:
+            self.grm.setText("Ghost Runner Mode ON")
+            ghostmode = True
+        elif os.path.isdir(os.path.join(path, "ghostrunner\\ghosts")) == False:
+            self.grm.setText("Ghost Runner Mode OFF")
+            ghostmode = False
 
 
     def lang(self):
@@ -182,7 +196,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 self.descriptionText.setPlainText("Description (Manual)\nDon't enter the seed.")
                 self.descriptionText.selectAll()
                 self.descriptionText.setAlignment(Qt.AlignCenter)
-            
+    
+
+        
+
 
 
     def auto(self):
@@ -245,7 +262,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     mc_diffi = str(dat["Data"]["Difficulty"])
                     mc_hardcore = str(dat["Data"]["hardcore"])
                     mc_seed = str(dat["Data"]["RandomSeed"])
-                    mc_moded = None                
+                    mc_moded = None             
             except: 
                 try: # 1.8
                     self.version.setCurrentText("Unknown")
@@ -260,45 +277,30 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     mc_seed = str(dat["Data"]["RandomSeed"])
                     mc_moded = None
 
+        except:
+            if self.langBox.currentText() == "한국어":
+                QMessageBox.warning(self, "오류", "월드를 감지할 수 없음", QMessageBox.Ok)
+            else:
+                QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
                 
 
-            global mc_sec
-            mc_sec = int(mc_igt) / 20
+        global mc_sec
+        if ghostmode == False:
+            mc_sec = int(mc_igt) // 20
             
-
-            dot = str(mc_sec)
-            dot = dot.index(".")
-            intsec = str(mc_sec)[:int(dot)]
-            min = int(intsec) // 60
+            
+                            
+            min = int(mc_sec) // 60
             hr = min // 60
-            sec = int(intsec) % 60
+            sec = int(mc_sec) % 60
             min = min % 60
-            ms = str(mc_sec)[int(dot) + 1:]
-            if len(ms) == 2:
-                ms = ms + "0"
-            elif len(ms) == 1:
-                ms = ms + "00"
-
-            if mc_hardcore == "1":
-                mc_diffi = "Hardcore"
-                self.diffiBox.setCurrentText("Hardcore")
-            elif mc_hardcore == "0":
-                if mc_diffi == "1":
-                    mc_diffi = "Easy"
-                    self.diffiBox.setCurrentText("Easy")
-                elif mc_diffi == "2":
-                    mc_diffi = "Normal"
-                    self.diffiBox.setCurrentText("Normal")
-                elif mc_diffi == "3":
-                    mc_diffi = "Hard"
-                    self.diffiBox.setCurrentText("Hard")
-                elif mc_diffi == None:
-                    self.diffiBox.setCurrentText("Unknown")
-            if mc_moded == "1":
-                mc_moded = True
-            elif mc_moded == "0":
-                mc_moded = False
+            ms = mc_igt % 20 * 5
             
+            if len(str(ms)) == 2:
+                ms = str(ms) + "0"
+            elif len(str(ms)) == 1:
+                ms = str(ms) + "00"
+
             if mc_isend == False or mc_isend == None:
                 self.igtHr.setText(str(hr))
                 self.igtMin.setText(str(min))
@@ -312,27 +314,88 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     self.igtSec.setText(str(sec))
                     self.igtPoint.setText(str(ms))
                     self.auto_stop = True
+        elif ghostmode == True:
+            ghostdir = os.path.join(path, "ghostrunner\\ghosts")
+            grm = sorted([os.path.join(ghostdir, s) for s in os.listdir(ghostdir)], key=os.path.getmtime, reverse=True)
+            for g in grm.copy()[:3]:
+                try:
+                    ghost = g
+                    gfile = os.path.join(ghost, "info.gri")
+                    
+                    if not gfile:
+                        continue
+                    else:
+                        with open (gfile, "r") as tf:
+                            lines = tf.read().split("#")
+                            gtrta = int(lines[3])
+                            gtigt = int(lines[4])
+
+                        break
+                except:
+                    continue
+            gtsec = gtrta // 1000
+            gtrtamin = gtsec // 60
+            gtrtahur = gtrtamin // 60
+            gtrtasec = gtsec % 60
+            gtrtamis = gtrta % 1000
+            gtrtamin = gtrtamin % 60
+
+            gtsec = gtigt // 1000
+            gtigtmin = gtsec // 60
+            gtigthur = gtigtmin // 60
+            gtigtsec = gtsec % 60
+            gtigtmis = gtigt % 1000
+            gtigtmin = gtigtmin % 60
+
+            self.rtaHr.setText(str(gtrtahur))
+            self.rtMin.setText(str(gtrtamin))
+            self.rtSec.setText(str(gtrtasec))
+            self.rtPoint.setText(str(gtrtamis))
+            self.igtHr.setText(str(gtigthur))
+            self.igtMin.setText(str(gtigtmin))
+            self.igtSec.setText(str(gtigtsec))
+            self.igtPoint.setText(str(gtigtmis))
 
 
-            if int(mc_igt) <= 10 or int(mc_igt) == None:
-                self.f3Box.setChecked(False)
 
 
-            if mc_moded == True:
-                if minor == "1.16" or "1.17":
-                    self.Mods.setCurrentText("Modded")
-                else:
-                    self.Mods.setCurrentText("Optifine")
-            elif mc_moded == False:
-                self.Mods.setCurrentText("Vanilla")
-            elif mc_moded == None:
-                self.Mods.setCurrentText("Unknown")
+        if mc_hardcore == "1":
+            mc_diffi = "Hardcore"
+            self.diffiBox.setCurrentText("Hardcore")
+        elif mc_hardcore == "0":
+            if mc_diffi == "1":
+                mc_diffi = "Easy"
+                self.diffiBox.setCurrentText("Easy")
+            elif mc_diffi == "2":
+                mc_diffi = "Normal"
+                self.diffiBox.setCurrentText("Normal")
+            elif mc_diffi == "3":
+                mc_diffi = "Hard"
+                self.diffiBox.setCurrentText("Hard")
+            elif mc_diffi == None:
+                self.diffiBox.setCurrentText("Unknown")
+        if mc_moded == "1":
+            mc_moded = True
+        elif mc_moded == "0":
+            mc_moded = False
         
-        except:
-            if self.langBox.currentText() == "한국어":
-                QMessageBox.warning(self, "오류", "월드를 감지할 수 없음", QMessageBox.Ok)
+        
+
+
+        if int(mc_igt) <= 10 or int(mc_igt) == None:
+            self.f3Box.setChecked(False)
+
+
+        if mc_moded == True:
+            if minor == "1.16" or "1.17":
+                self.Mods.setCurrentText("Modded")
             else:
-                QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
+                self.Mods.setCurrentText("Optifine")
+        elif mc_moded == False:
+            self.Mods.setCurrentText("Vanilla")
+        elif mc_moded == None:
+            self.Mods.setCurrentText("Unknown")
+        
 
 
 
