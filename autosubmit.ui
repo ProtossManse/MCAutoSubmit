@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MCAutoSubmit v1.2.0</string>
+   <string>MCAutoSubmit v1.2.1</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLineEdit" name="pathLine">
@@ -1085,7 +1085,7 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>Ghost Runner Mode OFF</string>
+     <string/>
     </property>
    </widget>
   </widget>

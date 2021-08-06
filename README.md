@@ -17,7 +17,7 @@ Run application before start a run.
 
 - **Auto Submit**: Using an API, you can automatically submit by one click.
 
-- **Remember Comment**: You don't have to rack your brains anymore.
+- **Remember Comment**: You don't have to rack your brains to comment anymore.
 
 - **Support Korean and English**: I've no plans to add more languages.
 

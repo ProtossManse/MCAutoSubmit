@@ -23,6 +23,7 @@ from nbt.nbt import NBTFile
 import getpass
 import datetime
 import requests
+import json
 
 
 from PyQt5.QtGui import *
@@ -32,11 +33,10 @@ from PyQt5 import uic
 from PyQt5 import QtTest
 
 
-version = "v1.2.0"
+version = "v1.2.1"
 
 
 username = getpass.getuser()
-path = os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")
 ghostmode = False
 WOWSANS = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MCAutoSubmit")
 
@@ -69,17 +69,19 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.pathButton.clicked.connect(self.browse)
         self.linkButton.clicked.connect(self.test)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
-        self.pathLine.setText(WOWSANS.value("path", path))
+        self.pathLine.setText(WOWSANS.value("path", os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")))
+        global path
+        path = WOWSANS.value("path", os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft"))
         global ghostmode
         if os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == True:
             self.grm.setText("Ghost Runner Mode ON")
             ghostmode = True
         elif os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == False:
-            self.grm.setText("Ghost Runner Mode OFF")
+            self.grm.setText("")
             ghostmode = False
         self.apiLine.setText(WOWSANS.value("api"))
         self.descriptionText.setPlainText(WOWSANS.value("desc", "Description (Manual)\nDon't enter the seed."))
-        self.descriptionText.selectAll()
+        # self.descriptionText.selectAll()
         self.descriptionText.setAlignment(Qt.AlignCenter)
         self.seedType.setCurrentText(WOWSANS.value("seedType", "RSG"))
         self.auto_stop = False
@@ -132,7 +134,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         pathops = QFileDialog.Options()
         pathops |= QFileDialog.ShowDirsOnly
         if self.langBox.currentText() == "한국어":
-            patht = QFileDialog.getExistingDirectory(self, '검색...', path)
+            patht = QFileDialog.getExistingDirectory(self, '탐색...', path)
         else:
             patht = QFileDialog.getExistingDirectory(self, 'Browse...', path)
         if patht != "":
@@ -144,7 +146,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.grm.setText("Ghost Runner Mode ON")
             ghostmode = True
         elif os.path.isdir(os.path.join(path, "ghostrunner\\ghosts")) == False:
-            self.grm.setText("Ghost Runner Mode OFF")
+            self.grm.setText("")
             ghostmode = False
 
 
@@ -163,7 +165,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
             self.label_10.setText("경로:")
             self.apiLabel.setText("<a href='https://www.speedrun.com/api/auth'>API 키 (URL):</a>")
             self.apiLabel.setOpenExternalLinks(True)
-            self.pathButton.setText("검색...")
+            self.pathButton.setText("탐색...")
             self.startButton.setText("제출")
             self.resetButton.setText("새로고침\n(Esc)")
             self.linkButton.setText("테스트...")
@@ -203,7 +205,19 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
     def auto(self):
-        
+
+        self.resetButton.setDisabled(True)
+
+        global ghostmode
+
+        if os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == True:
+            self.grm.setText("Ghost Runner Mode ON")
+            ghostmode = True
+        elif os.path.isdir(os.path.join(path, "ghostrunner\\ghosts")) == False:
+            self.grm.setText("")
+            ghostmode = False
+
+                
         mc_dir = path
         mc_world = os.path.join(mc_dir, "saves")
         try:
@@ -277,125 +291,129 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     mc_seed = str(dat["Data"]["RandomSeed"])
                     mc_moded = None
 
+        
+                
+
+            global mc_sec
+            if ghostmode == False:
+                mc_sec = int(mc_igt) // 20
+                
+                
+                                
+                min = int(mc_sec) // 60
+                hr = min // 60
+                sec = int(mc_sec) % 60
+                min = min % 60
+                ms = mc_igt % 20 * 5
+                
+                if len(str(ms)) == 2:
+                    ms = str(ms) + "0"
+                elif len(str(ms)) == 1:
+                    ms = str(ms) + "00"
+
+                if mc_isend == False or mc_isend == None:
+                    self.igtHr.setText(str(hr))
+                    self.igtMin.setText(str(min))
+                    self.igtSec.setText(str(sec))
+                    self.igtPoint.setText(str(ms))
+                    self.auto_stop = False
+                elif mc_isend == True:
+                    if self.auto_stop == False:
+                        self.igtHr.setText(str(hr))
+                        self.igtMin.setText(str(min))
+                        self.igtSec.setText(str(sec))
+                        self.igtPoint.setText(str(ms))
+                        self.auto_stop = True
+            elif ghostmode == True:
+                ghostdir = os.path.join(path, "ghostrunner\\ghosts")
+                grm = sorted([os.path.join(ghostdir, s) for s in os.listdir(ghostdir)], key=os.path.getmtime, reverse=True)
+                for g in grm.copy()[:3]:
+                    try:
+                        ghost = g
+                        gfile = os.path.join(ghost, "info.gri")
+                        
+                        if not gfile:
+                            continue
+                        else:
+                            with open (gfile, "r") as tf:
+                                lines = json.load(tf)
+                                gtrta = int(lines["rta"])
+                                gtigt = int(lines["igt"])
+
+                            break
+                    except:
+                        continue
+                gtsec = gtrta // 1000
+                gtrtamin = gtsec // 60
+                gtrtahur = gtrtamin // 60
+                gtrtasec = gtsec % 60
+                gtrtamis = gtrta % 1000
+                gtrtamin = gtrtamin % 60
+
+                gtsec = gtigt // 1000
+                gtigtmin = gtsec // 60
+                gtigthur = gtigtmin // 60
+                gtigtsec = gtsec % 60
+                gtigtmis = gtigt % 1000
+                gtigtmin = gtigtmin % 60
+
+                self.rtaHr.setText(str(gtrtahur))
+                self.rtMin.setText(str(gtrtamin))
+                self.rtSec.setText(str(gtrtasec))
+                self.rtPoint.setText(str(gtrtamis))
+                self.igtHr.setText(str(gtigthur))
+                self.igtMin.setText(str(gtigtmin))
+                self.igtSec.setText(str(gtigtsec))
+                self.igtPoint.setText(str(gtigtmis))
+
+
+
+
+            if mc_hardcore == "1":
+                mc_diffi = "Hardcore"
+                self.diffiBox.setCurrentText("Hardcore")
+            elif mc_hardcore == "0":
+                if mc_diffi == "1":
+                    mc_diffi = "Easy"
+                    self.diffiBox.setCurrentText("Easy")
+                elif mc_diffi == "2":
+                    mc_diffi = "Normal"
+                    self.diffiBox.setCurrentText("Normal")
+                elif mc_diffi == "3":
+                    mc_diffi = "Hard"
+                    self.diffiBox.setCurrentText("Hard")
+                elif mc_diffi == None:
+                    self.diffiBox.setCurrentText("Unknown")
+            if mc_moded == "1":
+                mc_moded = True
+            elif mc_moded == "0":
+                mc_moded = False
+            
+            
+
+
+            if int(mc_igt) <= 10 or int(mc_igt) == None:
+                self.f3Box.setChecked(False)
+
+
+            if mc_moded == True:
+                if minor == "1.16" or "1.17":
+                    self.Mods.setCurrentText("Modded")
+                else:
+                    self.Mods.setCurrentText("Optifine")
+            elif mc_moded == False:
+                self.Mods.setCurrentText("Vanilla")
+            elif mc_moded == None:
+                self.Mods.setCurrentText("Unknown")
+        
+
         except:
             if self.langBox.currentText() == "한국어":
                 QMessageBox.warning(self, "오류", "월드를 감지할 수 없음", QMessageBox.Ok)
             else:
                 QMessageBox.warning(self, "ERROR", "No World Found", QMessageBox.Ok)
-                
+        self.resetButton.setEnabled(True)
 
-        global mc_sec
-        if ghostmode == False:
-            mc_sec = int(mc_igt) // 20
-            
-            
-                            
-            min = int(mc_sec) // 60
-            hr = min // 60
-            sec = int(mc_sec) % 60
-            min = min % 60
-            ms = mc_igt % 20 * 5
-            
-            if len(str(ms)) == 2:
-                ms = str(ms) + "0"
-            elif len(str(ms)) == 1:
-                ms = str(ms) + "00"
-
-            if mc_isend == False or mc_isend == None:
-                self.igtHr.setText(str(hr))
-                self.igtMin.setText(str(min))
-                self.igtSec.setText(str(sec))
-                self.igtPoint.setText(str(ms))
-                self.auto_stop = False
-            elif mc_isend == True:
-                if self.auto_stop == False:
-                    self.igtHr.setText(str(hr))
-                    self.igtMin.setText(str(min))
-                    self.igtSec.setText(str(sec))
-                    self.igtPoint.setText(str(ms))
-                    self.auto_stop = True
-        elif ghostmode == True:
-            ghostdir = os.path.join(path, "ghostrunner\\ghosts")
-            grm = sorted([os.path.join(ghostdir, s) for s in os.listdir(ghostdir)], key=os.path.getmtime, reverse=True)
-            for g in grm.copy()[:3]:
-                try:
-                    ghost = g
-                    gfile = os.path.join(ghost, "info.gri")
-                    
-                    if not gfile:
-                        continue
-                    else:
-                        with open (gfile, "r") as tf:
-                            lines = tf.read().split("#")
-                            gtrta = int(lines[3])
-                            gtigt = int(lines[4])
-
-                        break
-                except:
-                    continue
-            gtsec = gtrta // 1000
-            gtrtamin = gtsec // 60
-            gtrtahur = gtrtamin // 60
-            gtrtasec = gtsec % 60
-            gtrtamis = gtrta % 1000
-            gtrtamin = gtrtamin % 60
-
-            gtsec = gtigt // 1000
-            gtigtmin = gtsec // 60
-            gtigthur = gtigtmin // 60
-            gtigtsec = gtsec % 60
-            gtigtmis = gtigt % 1000
-            gtigtmin = gtigtmin % 60
-
-            self.rtaHr.setText(str(gtrtahur))
-            self.rtMin.setText(str(gtrtamin))
-            self.rtSec.setText(str(gtrtasec))
-            self.rtPoint.setText(str(gtrtamis))
-            self.igtHr.setText(str(gtigthur))
-            self.igtMin.setText(str(gtigtmin))
-            self.igtSec.setText(str(gtigtsec))
-            self.igtPoint.setText(str(gtigtmis))
-
-
-
-
-        if mc_hardcore == "1":
-            mc_diffi = "Hardcore"
-            self.diffiBox.setCurrentText("Hardcore")
-        elif mc_hardcore == "0":
-            if mc_diffi == "1":
-                mc_diffi = "Easy"
-                self.diffiBox.setCurrentText("Easy")
-            elif mc_diffi == "2":
-                mc_diffi = "Normal"
-                self.diffiBox.setCurrentText("Normal")
-            elif mc_diffi == "3":
-                mc_diffi = "Hard"
-                self.diffiBox.setCurrentText("Hard")
-            elif mc_diffi == None:
-                self.diffiBox.setCurrentText("Unknown")
-        if mc_moded == "1":
-            mc_moded = True
-        elif mc_moded == "0":
-            mc_moded = False
-        
-        
-
-
-        if int(mc_igt) <= 10 or int(mc_igt) == None:
-            self.f3Box.setChecked(False)
-
-
-        if mc_moded == True:
-            if minor == "1.16" or "1.17":
-                self.Mods.setCurrentText("Modded")
-            else:
-                self.Mods.setCurrentText("Optifine")
-        elif mc_moded == False:
-            self.Mods.setCurrentText("Vanilla")
-        elif mc_moded == None:
-            self.Mods.setCurrentText("Unknown")
-        
 
 
 
@@ -433,6 +451,20 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
     def macro1(self):
+
+
+
+        if self.rtaHr.text() == "":
+            self.rtaHr.setText("0")
+        if self.rtMin.text() == "":
+            self.rtMin.setText("0")
+        if self.rtSec.text() == "":
+            self.rtSec.setText("0")
+        if self.rtPoint.text() == "":
+            self.rtPoint.setText("0")
+
+        
+
         rtHour = int(self.rtaHr.text())
         rtMin = int(self.rtMin.text())
         rtSec = int(self.rtSec.text())
