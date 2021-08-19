@@ -877,16 +877,11 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="currentText">
-      <string>RSG</string>
+      <string>FSG</string>
      </property>
      <item>
       <property name="text">
-       <string>RSG</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>SSG</string>
+       <string>FSG</string>
       </property>
      </item>
     </widget>
