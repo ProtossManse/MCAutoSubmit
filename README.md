@@ -1,4 +1,4 @@
-# MCAutoSubmit
+# MCAutoSubmit (Filtered Seed Glitchless)
 
 Copyright © 2021 ProtossManse (Discord ProtossManse#3053)
 
