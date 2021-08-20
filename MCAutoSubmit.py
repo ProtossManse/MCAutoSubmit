@@ -33,7 +33,7 @@ from PyQt5 import uic
 from PyQt5 import QtTest
 
 
-version = "v1.2.1"
+APPVERSION = "v1.2.2"
 
 
 username = getpass.getuser()
@@ -106,7 +106,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {version} by ProtossManse.<br><br>Icon by ChobojaX.<br><br>Special Thanks to Haruww, Azura, Meera and Salix.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {APPVERSION} by ProtossManse.<br><br>Icon by ChobojaX.<br><br>Special Thanks to Haruww, Azura, Meera and Salix.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -618,44 +618,44 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                         QMessageBox.warning(self, "ERROR", "Difficulty or Mods or Version isn't set.")
                 else:
                     datas = {
-                    "category": "mkeyl926",
-                    "date": datetime.datetime.today().strftime("%Y-%m-%d"),
-                    "platform": "8gej2n93",
-                    "verified": False,
-                    "times": {
-                    "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
-                    "realtime_noloads": 0,
-                    "ingame": igtHr * 3600 + igtMin * 60 + igtSec + igtPoint / 1000,
-                    },
-                    "emulated": False,
-                    "video": ytlink,
-                    "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {version}",
-                    "variables": {
-                    "jlzkwql2": {
-                        "type": "pre-defined",
-                        "value": versionKey
-                    },
-                    "9l737pn1": {
-                        "type": "pre-defined",
-                        "value": diffiid
-                    },
-                    "r8rg67rn": {
-                        "type": "pre-defined",
-                        "value": seedTypeKey
-                    },
-                    "wl33kewl": {
-                        "type": "pre-defined",
-                        "value": versionRange
-                    },
-                    "ql6g2ow8": {
-                        "type": "pre-defined",
-                        "value": f3
-                    },
-                    "dloymqd8": {
-                        "type": "pre-defined",
-                        "value": modsapi
-                    }
-                    }
+                        "category": "mkeyl926",
+                        "date": datetime.datetime.today().strftime("%Y-%m-%d"),
+                        "platform": "8gej2n93",
+                        "verified": False,
+                        "times": {
+                            "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
+                            "realtime_noloads": 0,
+                            "ingame": igtHr * 3600 + igtMin * 60 + igtSec + igtPoint / 1000,
+                        },
+                        "emulated": False,
+                        "video": ytlink,
+                        "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {version}",
+                        "variables": {
+                            "jlzkwql2": {
+                                "type": "pre-defined",
+                                "value": versionKey
+                            },
+                            "9l737pn1": {
+                                "type": "pre-defined",
+                                "value": diffiid
+                            },
+                            "r8rg67rn": {
+                                "type": "pre-defined",
+                                "value": seedTypeKey
+                            },
+                            "wl33kewl": {
+                                "type": "pre-defined",
+                                "value": versionRange
+                            },
+                            "ql6g2ow8": {
+                                "type": "pre-defined",
+                                "value": f3
+                            },
+                            "dloymqd8": {
+                                "type": "pre-defined",
+                                "value": modsapi
+                            }
+                        }
                     }
 
 
