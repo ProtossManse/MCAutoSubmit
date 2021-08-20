@@ -436,7 +436,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         seedType = self.seedType.currentText()
         version = self.version.currentText()
 
-        seedTypeKey = "n2y9z41d"
         mods = self.Mods.currentText()
         if mods == "Vanilla":
             modsapi = "klrnve21"
