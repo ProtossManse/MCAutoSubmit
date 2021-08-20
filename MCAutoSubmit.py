@@ -33,7 +33,7 @@ from PyQt5 import uic
 from PyQt5 import QtTest
 
 
-version = "v1.2.1"
+APPVERSION = "v1.2.2"
 
 
 username = getpass.getuser()
@@ -106,7 +106,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {version} by ProtossManse.<br><br>Icon by ChobojaX.<br><br>Special Thanks to Haruww, Azura, Meera and Salix.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {APPVERSION} by ProtossManse.<br><br>Icon by ChobojaX.<br><br>Special Thanks to Haruww, Azura, Meera and Salix.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -483,83 +483,77 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 else:
                     QMessageBox.warning(self, "ERROR", "Description isn't set. (Blank Available)")
             else:
-                if diffi == "Unknown" or mods == "Unknown" or version == "Unknown":
-                    if self.langBox.currentText() == "한국어":
-                        QMessageBox.warning(self, "오류", "난이도 혹은 모드 혹은 버전 정보를 입력하지 않음.")
-                    else:
-                        QMessageBox.warning(self, "ERROR", "Difficulty or Mods or Version isn't set.")
-                else:
-                    datas = {
-                        "category": "mkeyl926",
-                        "date": datetime.datetime.today().strftime("%Y-%m-%d"),
-                        "platform": "8gej2n93",
-                        "verified": False,
-                        "times": {
-                            "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
-                            "realtime_noloads": 0,
-                            "ingame": igtHr * 3600 + igtMin * 60 + igtSec + igtPoint / 1000,
+                datas = {
+                    "category": "n2y9z41d",
+                    "date": datetime.datetime.today().strftime("%Y-%m-%d"),
+                    "platform": "8gej2n93",
+                    "verified": False,
+                    "times": {
+                        "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
+                        "realtime_noloads": 0,
+                        "ingame": igtHr * 3600 + igtMin * 60 + igtSec + igtPoint / 1000,
+                    },
+                    "emulated": False,
+                    "video": ytlink,
+                    "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {version}",
+                    "variables": {
+                        "ylpm5erl": { # Version
+                            "type": "pre-defined",
+                            "value": versionRange
                         },
-                        "emulated": False,
-                        "video": ytlink,
-                        "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {version}",
-                        "variables": {
-                            "ylpm5erl": { # Version
-                                "type": "pre-defined",
-                                "value": versionRange
-                            },
-                            "j846z5wl": { # Sub version
-                                "type": "pre-defined",
-                                "value": versionKey
-                            },
-                            "0nwkeorn": { # Difficulty
-                                "type": "pre-defined",
-                                "value": diffiid
-                            },
-                            "ylqkjo3l": { # F3
-                                "type": "pre-defined",
-                                "value": f3
-                            },
-                            "jlzwkmql": { # Mods
-                                "type": "pre-defined",
-                                "value": modsapi
-                            },
-                            "jlzrovq8": { # Version (Filtered Seed Glitchless)
-                                "type": "pre-defined",
-                                "value": "mlnp8rd1"
-                            },
-                            "ql61eov8": { # Player Count
-                                "type": "pre-defined",
-                                "value": "81pvroe1"
-                            }
+                        "j846z5wl": { # Sub version
+                            "type": "pre-defined",
+                            "value": versionKey
+                        },
+                        "0nwkeorn": { # Difficulty
+                            "type": "pre-defined",
+                            "value": diffiid
+                        },
+                        "ylqkjo3l": { # F3
+                            "type": "pre-defined",
+                            "value": f3
+                        },
+                        "jlzwkmql": { # Mods
+                            "type": "pre-defined",
+                            "value": modsapi
+                        },
+                        "jlzrovq8": { # Version (Filtered Seed Glitchless)
+                            "type": "pre-defined",
+                            "value": "mlnp8rd1"
+                        },
+                        "ql61eov8": { # Player Count
+                            "type": "pre-defined",
+                            "value": "81pvroe1"
                         }
                     }
+                }
 
 
 
 
 
-                    self.startButton.setDisabled(True)
-                    QtTest.QTest.qWait(300)
-                    r = requests.post('https://www.speedrun.com/api/v1/runs', json={'run': datas}, headers={'X-API-Key': api_key})
-                    QtTest.QTest.qWait(300)
-                    if r.status_code == 201:
-                        if self.langBox.currentText() == "한국어":
-                            QMessageBox.information(self,"MCAutoSubmit", "등록이 완료되었습니다. ")
-                        else:
-                            QMessageBox.information(self,"MCAutoSubmit", "Submit Finished.")
+                self.startButton.setDisabled(True)
+                QtTest.QTest.qWait(150)
+                r = requests.post('https://www.speedrun.com/api/v1/runs', json={'run': datas}, headers={'X-API-Key': api_key})
+                QtTest.QTest.qWait(150)
+                if r.status_code == 201:
+                    if self.langBox.currentText() == "한국어":
+                        QMessageBox.information(self,"MCAutoSubmit", "등록이 완료되었습니다. ")
                     else:
-                        try:
-                            if self.langBox.currentText() == "한국어":
-                                QMessageBox.warning(self,"오류", str(r.json()['errors']))
-                            else:
-                                QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
-                        except:
-                            if self.langBox.currentText() == "한국어":
-                                QMessageBox.warning(self, "오류", "알 수 없는 오류")
-                            else:
-                                QMessageBox.warning(self, "ERROR", "Unknown ERROR")
+                        QMessageBox.information(self,"MCAutoSubmit", "Submit Finished.")
+                else:
+                    try:
+                        if self.langBox.currentText() == "한국어":
+                            QMessageBox.warning(self,"오류", str(r.json()['errors']))
+                        else:
+                            QMessageBox.warning(self,"ERROR", str(r.json()['errors']))
+                    except:
+                        if self.langBox.currentText() == "한국어":
+                            QMessageBox.warning(self, "오류", "알 수 없는 오류")
+                        else:
+                            QMessageBox.warning(self, "ERROR", "Unknown ERROR")
 
-                    self.startButton.setEnabled(True)
+                self.startButton.setEnabled(True)
 
 
         
