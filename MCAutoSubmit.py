@@ -494,7 +494,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                     },
                     "emulated": False,
                     "video": ytlink,
-                    "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {version}",
+                    "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {APPVERSION}",
                     "variables": {
                         "ylpm5erl": { # Version
                             "type": "pre-defined",
