@@ -245,51 +245,14 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 mc_isend = None
             mc_igt = str(dat["Data"]["Time"])
             mc_igt = int(mc_igt) - 1
-            try:
-                mc_version = str(dat["Data"]["Version"]["Name"])
-                global minor
-                if mc_version.count(".") == 2:
-                    if mc_version == "1.7.10":
-                        minor = mc_version[:-3]
-                    else:
-                        minor = mc_version[:-2]
-                        print(minor)
-                elif mc_version.count(".") == 1:
-                    minor = mc_version
+            
                 
-                global mc_seed
+            global mc_seed
 
-                if minor == "1.16" or minor == "1.17":
-                    self.version.setCurrentText(mc_version)
-                    mc_diffi = str(dat["Data"]["Difficulty"])
-                    mc_hardcore = str(dat["Data"]["hardcore"])
-                    mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
-                    mc_moded = str(dat["Data"]["WasModded"])
-                elif minor == "1.15":
-                    self.version.setCurrentText(mc_version)
-                    mc_diffi = str(dat["Data"]["Difficulty"])
-                    mc_hardcore = str(dat["Data"]["hardcore"])
-                    mc_seed = str(dat["Data"]["RandomSeed"])
-                    mc_moded = str(dat["Data"]["WasModded"])
-                elif minor == "1.14":
-                    self.version.setCurrentText(mc_version)
-                    mc_diffi = str(dat["Data"]["Difficulty"])
-                    mc_hardcore = str(dat["Data"]["hardcore"])
-                    mc_seed = str(dat["Data"]["RandomSeed"])
-                    mc_moded = None             
-            except: 
-                try: # 1.8
-                    self.version.setCurrentText("Unknown")
-                    mc_diffi = str(dat["Data"]["Difficulty"])
-                    mc_hardcore = str(dat["Data"]["hardcore"])
-                    mc_seed = str(dat["Data"]["RandomSeed"])
-                    mc_moded = None
-                except: #pre 1.8
-                    self.version.setCurrentText("Unknown")
-                    mc_diffi = None
-                    mc_hardcore = str(dat["Data"]["hardcore"])
-                    mc_seed = str(dat["Data"]["RandomSeed"])
-                    mc_moded = None
+            mc_diffi = str(dat["Data"]["Difficulty"])
+            mc_hardcore = str(dat["Data"]["hardcore"])
+            mc_seed = str(dat["Data"]["WorldGenSettings"]["seed"])
+            mc_moded = str(dat["Data"]["WasModded"])
 
         
                 
@@ -382,8 +345,6 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                 elif mc_diffi == "3":
                     mc_diffi = "Hard"
                     self.diffiBox.setCurrentText("Hard")
-                elif mc_diffi == None:
-                    self.diffiBox.setCurrentText("Unknown")
             if mc_moded == "1":
                 mc_moded = True
             elif mc_moded == "0":
@@ -397,14 +358,12 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
 
             if mc_moded == True:
-                if minor == "1.16" or "1.17":
-                    self.Mods.setCurrentText("Modded")
-                else:
-                    self.Mods.setCurrentText("Optifine")
+                
+                self.Mods.setCurrentText("Modded")
+
             elif mc_moded == False:
                 self.Mods.setCurrentText("Vanilla")
-            elif mc_moded == None:
-                self.Mods.setCurrentText("Unknown")
+
         
 
         except:
@@ -420,10 +379,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
     def test(self):
         WOWSANS.setValue("api", self.apiLine.text())
         self.linkButton.setDisabled(True)
-        QtTest.QTest.qWait(300)
+        # QtTest.QTest.qWait(300)
         api_key = self.apiLine.text()
         res = requests.get('https://www.speedrun.com/api/v1/profile', headers={'X-API-Key': api_key})
-        QtTest.QTest.qWait(300)
+        # QtTest.QTest.qWait(300)
         if str(res) == "<Response [403]>":
             if self.langBox.currentText() == "한국어":
                 QMessageBox.warning(self, "오류", "유저를 찾을 수 없음", QMessageBox.Ok)
@@ -477,116 +436,29 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         seedType = self.seedType.currentText()
         version = self.version.currentText()
 
-        vdict = {
-				"mln68v0q": "1.16.1",
-				"gq7rrnnl": "1.14.4",
-				"jq6vwj1m": "1.7.2",
-				"013xkx15": "1.7.10",
-				"4lx5gk41": "1.8.9",
-				"9qj2o314": "1.6.4",
-				"rqvx06l6": "1.0",
-				"5len0klo": "1.1",
-				"0q54m2lp": "1.2.1",
-				"4lxgk4q2": "1.2.2",
-				"81496vqd": "1.2.3",
-				"z19xv814": "1.2.4",
-				"p129k4lx": "1.2.5",
-				"81pez8l7": "1.3.1",
-				"xqko3k19": "1.3.2",
-				"gq72od1p": "1.4.2",
-				"21g968qz": "1.4.4",
-				"jqzgw8lp": "1.4.5",
-				"klrxdmlp": "1.4.6",
-				"21d6n5qe": "1.4.7",
-				"5q8433ld": "1.5.1",
-				"4qy7m2q7": "1.5.2",
-				"mlne7jlp": "1.6.1",
-				"8106y21v": "1.6.2",
-				"21d43441": "1.7.3",
-				"5lm2emqv": "1.7.4",
-				"81w72vq4": "1.7.5",
-				"814o96vq": "1.7.6",
-				"z192xv8q": "1.7.7",
-				"p12v9k4q": "1.7.8",
-				"zqojex1y": "1.7.9",
-				"rqvx26l6": "1.8",
-				"5lenyklo": "1.8.1",
-				"21dv7g1e": "1.8.2",
-				"5q8276qd": "1.8.3",
-				"5le86mlo": "1.8.4",
-				"01340kl5": "1.8.5",
-				"rqvz7516": "1.8.6",
-				"5levop1o": "1.8.7",
-				"gq7zyr1p": "1.8.8",
-				"81pyez81": "1.9",
-				"xqkeo3kq": "1.9.1",
-				"gq752od1": "1.9.2",
-				"21gn968l": "1.9.3",
-				"jqzngw8q": "1.9.4",
-				"klr3xdml": "1.10",
-				"5lmygj8l": "1.10.1",
-				"jq678gv1": "1.10.2",
-				"0q54o3nl": "1.11",
-				"zqo0rw5q": "1.11.1",
-				"4lxgvw4q": "1.11.2",
-				"xqkonxn1": "1.12",
-				"5q8270kq": "1.12.1",
-				"p12ongvl": "1.12.2",
-				"8142pg0l": "1.13",
-				"z19rz201": "1.13.1",
-				"z19ryv41": "1.13.2",
-				"9qj49koq": "1.14",
-				"01305er1": "1.14.1",
-				"814vn2v1": "1.14.2",
-				"jqzx69m1": "1.14.3",
-				"gq7zrdd1": "1.15",
-				"21dor7gq": "1.15.1",
-				"21go7k8q": "1.15.2",
-				"mln64j6q": "1.16",
-				"21d7zo31": "1.16.2",
-				"21d7evp1": "1.16.3",
-				"21dgwkj1": "1.16.4",
-				"21dzz0jl": "1.16.5",
-				"5q8ojzr1": "1.17",
-				"4qy93w3l": "1.17.1"
-			}
-        vdict = {v:k for k,v in vdict.items()}
-
-        if seedType == "SSG":
-            seedTypeKey = "klrzpjo1"
-        elif seedType == "RSG":
-            seedTypeKey = "21d4zvp1"
+        seedTypeKey = "n2y9z41d"
         mods = self.Mods.currentText()
         if mods == "Vanilla":
-            modsapi = "21gyvwm1"
+            modsapi = "klrnve21"
         elif mods == "Modded":
-            modsapi = "jq6kxd3l"
-        elif mods == "Optifine":
-            modsapi = "jqzk8rmq"
+            modsapi = "5lmj45jl"
         diffi = self.diffiBox.currentText()
         if diffi == "Easy":
-            diffiid = "4lxg24q2"
+            diffiid = "21g22nnl"
         elif diffi == "Normal":
-            diffiid = "8149mvqd"
+            diffiid = "jqzxxng1"
         elif diffi == "Hard":
-            diffiid = "z19xe814"
+            diffiid = "klryy3jq"
         elif diffi == "Hardcore":
-            diffiid = "p129j4lx"
+            diffiid = "21d33k4q"
         
-        if self.f3Box.isChecked() == True:
-            f3 = "rqvmvz6q"
-        else:
-            f3 = "5lee2vkl"
+        if self.f3Box.isChecked() == True: # F3
+            f3 = "81w5z0m1" 
+        else: # No F3
+            f3 = "zqorkv5q"
         
-        if minor == "1.16" or minor == "1.17":
-            versionKey = vdict[version]
-            versionRange = "4qye4731"
-        elif minor == "1.15" or minor == "1.14" or minor == "1.13" or minor == "1.12" or minor == "1.11" or minor == "1.10" or minor == "1.9":
-            versionKey = vdict[version]
-            versionRange = "21go6e6q"
-        else:
-            versionKey = vdict[version]
-            versionRange = "gq7zo9p1"
+            versionKey = "21d7k251"
+            versionRange = "81p8o6el"
 
 
 
@@ -618,44 +490,48 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                         QMessageBox.warning(self, "ERROR", "Difficulty or Mods or Version isn't set.")
                 else:
                     datas = {
-                    "category": "mkeyl926",
-                    "date": datetime.datetime.today().strftime("%Y-%m-%d"),
-                    "platform": "8gej2n93",
-                    "verified": False,
-                    "times": {
-                    "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
-                    "realtime_noloads": 0,
-                    "ingame": igtHr * 3600 + igtMin * 60 + igtSec + igtPoint / 1000,
-                    },
-                    "emulated": False,
-                    "video": ytlink,
-                    "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {version}",
-                    "variables": {
-                    "jlzkwql2": {
-                        "type": "pre-defined",
-                        "value": versionKey
-                    },
-                    "9l737pn1": {
-                        "type": "pre-defined",
-                        "value": diffiid
-                    },
-                    "r8rg67rn": {
-                        "type": "pre-defined",
-                        "value": seedTypeKey
-                    },
-                    "wl33kewl": {
-                        "type": "pre-defined",
-                        "value": versionRange
-                    },
-                    "ql6g2ow8": {
-                        "type": "pre-defined",
-                        "value": f3
-                    },
-                    "dloymqd8": {
-                        "type": "pre-defined",
-                        "value": modsapi
-                    }
-                    }
+                        "category": "mkeyl926",
+                        "date": datetime.datetime.today().strftime("%Y-%m-%d"),
+                        "platform": "8gej2n93",
+                        "verified": False,
+                        "times": {
+                            "realtime": rtHour * 3600 + rtMin * 60 + rtSec + rtPoint / 1000,
+                            "realtime_noloads": 0,
+                            "ingame": igtHr * 3600 + igtMin * 60 + igtSec + igtPoint / 1000,
+                        },
+                        "emulated": False,
+                        "video": ytlink,
+                        "comment": f"Seed: {mc_seed}\r\n{desc}\r\n\r\nSubmitted using MCAutoSubmit {version}",
+                        "variables": {
+                            "ylpm5erl": { # Version
+                                "type": "pre-defined",
+                                "value": versionRange
+                            },
+                            "j846z5wl": { # Sub version
+                                "type": "pre-defined",
+                                "value": versionKey
+                            },
+                            "0nwkeorn": { # Difficulty
+                                "type": "pre-defined",
+                                "value": diffiid
+                            },
+                            "ylqkjo3l": { # F3
+                                "type": "pre-defined",
+                                "value": f3
+                            },
+                            "jlzwkmql": { # Mods
+                                "type": "pre-defined",
+                                "value": modsapi
+                            },
+                            "jlzrovq8": { # Version (Filtered Seed Glitchless)
+                                "type": "pre-defined",
+                                "value": "mlnp8rd1"
+                            },
+                            "ql61eov8": { # Player Count
+                                "type": "pre-defined",
+                                "value": "81pvroe1"
+                            }
+                        }
                     }
 
 
