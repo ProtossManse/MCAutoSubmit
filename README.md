@@ -13,7 +13,7 @@ Run application before start a run.
 
 ## Features
 
-- **Auto Read World Data**: Automattically detects Difficulty, F3, IGT, Mods, RTA, Seed and Version. So you just input video URL and comment.
+- **Auto Read World Data**: Automattically detects Difficulty, F3, IGT, Mods, Seed and Version. So you just input video URL and comment.
 
 - **Auto Submit**: Using an API, you can automatically submit by one click.
 
