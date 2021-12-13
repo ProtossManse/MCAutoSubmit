@@ -11,6 +11,22 @@ Run application before start a run.
 **Do not use outdated version!**
 
 
+
+## Linux
+
+You app must be root to use keyboard library on Linux.
+
+**So you have to run the app using the command below:**
+
+
+```
+sudo ./MCAutoSubmit_v1.2.3_Linux
+```
+
+
+I'm trying to solve this problem.
+
+
 ## Features
 
 - **Auto Read World Data**: Automattically detects Difficulty, F3, IGT, Mods, Seed and Version. So you just input video URL and comment.
