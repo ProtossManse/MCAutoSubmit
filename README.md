@@ -14,7 +14,7 @@ Run application before start a run.
 
 ## Linux
 
-You app must be root to use keyboard library on Linux.
+You must be root to use Keyboard library on Linux.
 
 **So you have to run the app using the command below:**
 
