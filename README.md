@@ -20,7 +20,7 @@ You must be root to use Keyboard library on Linux.
 
 
 ```
-sudo ./MCAutoSubmit_v1.2.3_Linux
+sudo ./MCAutoSubmit_v1_2_3_Linux
 ```
 
 
