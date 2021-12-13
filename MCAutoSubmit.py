@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 '''
 MCAutoSubmit
 Copyright © 2021 by ProtossManse (Discord: ProtossManse#3053)
@@ -18,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import sys
 import os
+import platform
 import keyboard
 from nbt.nbt import NBTFile
 import getpass
@@ -31,15 +34,6 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5 import QtTest
-
-
-APPVERSION = "v1.2.2"
-
-
-username = getpass.getuser()
-ghostmode = False
-WOWSANS = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MCAutoSubmit")
-
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -51,9 +45,30 @@ def resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
+if platform.system() == "Linux":
+    SYSTEM = "Linux"
+    macUI = resource_path("autosubmitLinux.ui")
+    username = getpass.getuser()
+    if username == "root":
+        username = os.environ["SUDO_USER"]
+elif platform.system() == "Windows":
+    SYSTEM = "Windows"
+    username = getpass.getuser()
+    macUI = resource_path("autosubmit.ui")
 
-macUI = resource_path("autosubmit.ui")
 macUI = str(macUI)
+
+
+APPVERSION = "v1.2.3"
+
+
+
+ghostmode = False
+WOWSANS = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MCAutoSubmit")
+
+
+
+
 ico = resource_path("MCAutoSubmit.png")
 
 Ui_MainWindow = uic.loadUiType(macUI)[0]
@@ -69,19 +84,24 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.pathButton.clicked.connect(self.browse)
         self.linkButton.clicked.connect(self.test)
         self.hook = keyboard.on_press(self.keyboardEventReceived)
-        self.pathLine.setText(WOWSANS.value("path", os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft")))
         global path
-        path = WOWSANS.value("path", os.path.join("C:\\Users",username,"AppData\\Roaming\\.minecraft"))
+        if SYSTEM == "Windows":
+            self.pathLine.setText(WOWSANS.value("path", os.path.join("C:/Users",username,"AppData/Roaming/.minecraft")))
+            path = WOWSANS.value("path", os.path.join("C:/Users",username,"AppData/Roaming/.minecraft"))
+        elif SYSTEM == "Linux":
+            self.pathLine.setText(WOWSANS.value("path", os.path.join("/", "home",username,".minecraft")))
+            path = WOWSANS.value("path", os.path.join("/", "home",username,".minecraft"))
+        
         global ghostmode
-        if os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == True:
+        if os.path.isdir(os.path.join(path,"ghostrunner/ghosts")) == True:
             self.grm.setText("Ghost Runner Mode ON")
             ghostmode = True
-        elif os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == False:
+        elif os.path.isdir(os.path.join(path,"ghostrunner/ghosts")) == False:
             self.grm.setText("")
             ghostmode = False
         self.apiLine.setText(WOWSANS.value("api"))
         self.descriptionText.setPlainText(WOWSANS.value("desc", "Description (Manual)\nDon't enter the seed."))
-        # self.descriptionText.selectAll()
+        self.descriptionText.selectAll()
         self.descriptionText.setAlignment(Qt.AlignCenter)
         self.seedType.setCurrentText(WOWSANS.value("seedType", "RSG"))
         self.auto_stop = False
@@ -106,7 +126,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         self.apiLabel.setOpenExternalLinks(True)
 
     def credit(self, event):
-        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {APPVERSION} by ProtossManse.<br><br>Icon by ChobojaX.<br><br>Special Thanks to Haruww, Azura, Meera and Salix.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/Auto-Submit/blob/main/LICENSE.txt'>GNU General Public License v3.0.</a>")
+        QMessageBox.information(self, "Credits", f"Copyright © 2021 ProtossManse (Discord ProtossManse#3053)<br><br>MCAutoSubmit {APPVERSION} by ProtossManse.<br><br>Icon by ChobojaX.<br><br>Special Thanks to Haruww, Azura, Meera and Salix.<br><br>MCAutoSubmit is under the <a href='https://github.com/ProtossManse/MCAutoSubmit/blob/category/any%25glitchless/LICENSE.txt' target='_blank'>GNU General Public License v3.0.</a>")
         
 
     def seedClicked(self):
@@ -138,14 +158,14 @@ class MainDialog(QMainWindow, Ui_MainWindow):
         else:
             patht = QFileDialog.getExistingDirectory(self, 'Browse...', path)
         if patht != "":
-            path = patht.replace("/", "\\")
+            path = patht.replace("/", "/")
             self.pathLine.setText(str(path))
             WOWSANS.setValue("path", str(path))
         
-        if os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == True:
+        if os.path.isdir(os.path.join(path,"ghostrunner/ghosts")) == True:
             self.grm.setText("Ghost Runner Mode ON")
             ghostmode = True
-        elif os.path.isdir(os.path.join(path, "ghostrunner\\ghosts")) == False:
+        elif os.path.isdir(os.path.join(path, "ghostrunner/ghosts")) == False:
             self.grm.setText("")
             ghostmode = False
 
@@ -210,10 +230,10 @@ class MainDialog(QMainWindow, Ui_MainWindow):
 
         global ghostmode
 
-        if os.path.isdir(os.path.join(path,"ghostrunner\\ghosts")) == True:
+        if os.path.isdir(os.path.join(path,"ghostrunner/ghosts")) == True:
             self.grm.setText("Ghost Runner Mode ON")
             ghostmode = True
-        elif os.path.isdir(os.path.join(path, "ghostrunner\\ghosts")) == False:
+        elif os.path.isdir(os.path.join(path, "ghostrunner/ghosts")) == False:
             self.grm.setText("")
             ghostmode = False
 
@@ -325,7 +345,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
                         self.igtPoint.setText(str(ms))
                         self.auto_stop = True
             elif ghostmode == True:
-                ghostdir = os.path.join(path, "ghostrunner\\ghosts")
+                ghostdir = os.path.join(path, "ghostrunner/ghosts")
                 grm = sorted([os.path.join(ghostdir, s) for s in os.listdir(ghostdir)], key=os.path.getmtime, reverse=True)
                 for g in grm.copy()[:3]:
                     try:
