@@ -29,19 +29,19 @@ I'm trying to solve this problem.
 
 ## Features
 
-- **Auto Read World Data**: Automattically detects Difficulty, F3, IGT, Mods, Seed and Version. So you just input video URL and comment.
+- **Auto Reading World Data**: Automattically detects Difficulty, F3, IGT, Mods, Seed and Version. So you just input video URL and comment.
 
 - **Auto Submit**: Using an API, you can automatically submit by one click.
 
-- **Remember Comment**: You don't have to rack your brains to comment anymore.
+- **Remember Comment**: You don't have to rack your brain to comment anymore.
 
-- **Support Korean and English**: I've no plans to add more languages.
+- **Support Korean and English**: I have no plans to add more languages.
 
 ## Recommended
 
 - **[GhostRunner](https://github.com/RedLime/GhostRunner)**: You can use more accurate IGT and RTA. 
 
-> *Note: GhostRunner is not allowed yet.*
+> *Note: GhostRunner is not verified yet.*
 
 ---
 
